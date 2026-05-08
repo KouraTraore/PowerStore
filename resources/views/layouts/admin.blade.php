@@ -137,6 +137,7 @@
           <i class="ti ti-home"></i><span class="nav-text">Dashboard</span>
         </a>
       </li>
+      
       <li>
         <a class="nav-link {{ request()->routeIs('admin.category') ? 'active' : '' }}" href="{{ route('admin.category') }}">
           <i class="ti ti-box-seam"></i><span class="nav-text">Categories</span>
