@@ -144,17 +144,17 @@
         </a>
       </li>
       <li>
-        <a class="nav-link {{ request()->routeIs('admin.product') ? 'active' : '' }}" href="{{ route('admin.product') }}">
+        <a class="nav-link {{ request()->routeIs('admin.produits') ? 'active' : '' }}" href="{{ route('admin.product') }}">
           <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
         </a>
       </li>
       <li>
-        <a class="nav-link" href="{{ route('admin.reports') }}">
+        <a class="nav-link" href="{{ route('admin.factures') }}">
           <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
         </a>
       </li>
       <li>
-        <a class="nav-link" href="{{ route('admin.errors') }}">
+        <a class="nav-link" href="{{ route('admin.commandes') }}">
           <i class="ti ti-alert-circle"></i><span class="nav-text">Commandes</span>
         </a>
       </li>
