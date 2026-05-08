@@ -163,12 +163,7 @@
           <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
         </a>
       </li>
-     
-      <li>
-        <a class="nav-link" href="{{ route('admin.docs') }}">
-          <i class="ti ti-file-text"></i><span class="nav-text">Docs</span>
-        </a>
-      </li>
+    
       <li class="px-4 pt-4 pb-2"><small class="nav-text">Account</small></li>
       <li><a class="nav-link" href=""><i class="ti ti-logout"></i><span class="nav-text">Log in</span></a></li>
       <li><a class="nav-link" href=""><i class="ti ti-user-plus"></i><span class="nav-text">Sign up</span></a></li>
