@@ -137,6 +137,11 @@
           <i class="ti ti-home"></i><span class="nav-text">Dashboard</span>
         </a>
       </li>
+      <li>
+  <a class="nav-link {{ request()->routeIs('admin.clients') ? 'active' : '' }}" href="{{ route('admin.clients') }}">
+    <i class="ti ti-users"></i><span class="nav-text">Clients</span>
+  </a>
+</li>
       
       <li>
         <a class="nav-link {{ request()->routeIs('admin.category') ? 'active' : '' }}" href="{{ route('admin.category') }}">
@@ -148,16 +153,17 @@
           <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
         </a>
       </li>
+       <li>
+        <a class="nav-link" href="{{ route('admin.commandes') }}">
+          <i class="ti ti-alert-circle"></i><span class="nav-text">Commandes</span>
+        </a>
+      </li>
       <li>
         <a class="nav-link" href="{{ route('admin.factures') }}">
           <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
         </a>
       </li>
-      <li>
-        <a class="nav-link" href="{{ route('admin.commandes') }}">
-          <i class="ti ti-alert-circle"></i><span class="nav-text">Commandes</span>
-        </a>
-      </li>
+     
       <li>
         <a class="nav-link" href="{{ route('admin.docs') }}">
           <i class="ti ti-file-text"></i><span class="nav-text">Docs</span>

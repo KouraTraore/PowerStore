@@ -6,12 +6,14 @@ use App\Http\Controllers\admin\DocsController;
 use App\Http\Controllers\admin\ErrorsController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ReportController;
+use App\Http\Controllers\admin\ClientController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/admin/dashboard', [dashdordController::class, 'index'])->name('admin.index');
+Route::get('/admin/clients', [ClientController::class, 'index'])->name('admin.clients');
 Route::get('/admin/category', [CategoryController::class, 'index'])->name('admin.category');
 Route::get('/admin/produits', [ProductController::class, 'index'])->name('admin.produits');
 route::get('/admin/factures', [ReportController::class, 'index'])->name('admin.factures');
