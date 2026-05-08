@@ -9,6 +9,6 @@ class ErrorsController extends Controller
 {
     public function index()
     {
-        return view('admin.errors');
+        return view('admin.commandes');
     }
 }
