@@ -145,17 +145,17 @@
       </li>
       <li>
         <a class="nav-link {{ request()->routeIs('admin.product') ? 'active' : '' }}" href="{{ route('admin.product') }}">
-          <i class="ti ti-plus"></i><span class="nav-text">Add Product</span>
+          <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
         </a>
       </li>
       <li>
         <a class="nav-link" href="{{ route('admin.reports') }}">
-          <i class="ti ti-receipt"></i><span class="nav-text">Reports</span>
+          <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
         </a>
       </li>
       <li>
         <a class="nav-link" href="{{ route('admin.errors') }}">
-          <i class="ti ti-alert-circle"></i><span class="nav-text">404 Error</span>
+          <i class="ti ti-alert-circle"></i><span class="nav-text">Commandes</span>
         </a>
       </li>
       <li>
