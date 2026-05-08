@@ -1,154 +1,193 @@
 @extends('layouts.admin')
 
-@section('title', 'Reports - InApp Inventory Dashboard')
+@section('title', 'Factures')
 
 @section('content')
-<div class="row">
-  <div class="col-12">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div class="">
-        <h1 class="fs-3 mb-1">Reports</h1>
-        <p class="mb-0">View your inventory analytics and reports</p>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="row g-3 mb-3">
-  <!-- Stat cards -->
-  <div class="col-12 col-sm-6 col-md-3">
-    <div class="card h-100">
-      <div class="card-body p-4">
-        <h6 class="mb-4">Total Revenue</h6>
-        <h3 class="mb-1 fw-bold">$45,231</h3>
-        <p class="mb-0 text-success small"><i class="ti ti-arrow-up"></i> 12% from last month</p>
-      </div>
-    </div>
-  </div>
+<div class="row mb-4">
+    <div class="col-12">
 
-  <div class="col-12 col-sm-6 col-md-3">
-    <div class="card h-100">
-      <div class="card-body p-4">
-        <h6 class="mb-4">Products Sold</h6>
-        <h3 class="mb-1 fw-bold">1,234</h3>
-        <p class="mb-0 text-success small"><i class="ti ti-arrow-up"></i> 8% from last month</p>
-      </div>
-    </div>
-  </div>
+        <div class="d-flex justify-content-between align-items-center">
 
-  <div class="col-12 col-sm-6 col-md-3">
-    <div class="card h-100">
-      <div class="card-body p-4">
-        <h6 class="mb-4">Low Stock Items</h6>
-        <h3 class="mb-1 fw-bold">23</h3>
-        <p class="mb-0 text-danger small"><i class="ti ti-arrow-down"></i> 3% from last month</p>
-      </div>
-    </div>
-  </div>
+            <div>
+                <h1 class="fs-2 fw-bold">Factures</h1>
+                <p class="text-secondary">
+                    Gestion complète des factures clients
+                </p>
+            </div>
 
-  <div class="col-12 col-sm-6 col-md-3">
-    <div class="card h-100">
-      <div class="card-body p-4">
-        <h6 class="mb-4">Out of Stock</h6>
-        <h3 class="mb-1 fw-bold">5</h3>
-        <p class="mb-0 text-danger small"><i class="ti ti-arrow-down"></i> 2% from last month</p>
-      </div>
-    </div>
-  </div>
-</div>
+            <div>
+                <button class="btn btn-primary">
+                    <i class="ti ti-plus"></i>
+                    Ajouter une facture
+                </button>
+            </div>
 
-<div class="row mb-3">
-  <!-- Sales Overview (full width) -->
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body p-4">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3 gap-2">
-          <div>
-            <h2 class="mb-0 fs-5">Sales Overview</h2>
-          </div>
-          <div class="controls">
-            <button id="btn-random" class="btn btn-light btn-sm">Randomize Data</button>
-            <button id="btn-update" class="btn btn-primary btn-sm">Show This Year Only</button>
-          </div>
         </div>
 
-        <!-- Chart placeholder -->
-        <div id="salesChart"></div>
-
-        <div class="d-flex justify-content-end">
-          <a href="#" class="small">View detailed report</a>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
 
-<div class="row">
-  <!-- Top Products -->
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body p-4">
+<div class="row g-3 mb-4">
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+
+                <h6 class="text-secondary">
+                    Total Factures
+                </h6>
+
+                <h2 class="fw-bold">
+                    120
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+
+                <h6 class="text-secondary">
+                    Factures Payées
+                </h6>
+
+                <h2 class="fw-bold text-success">
+                    95
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+
+                <h6 class="text-secondary">
+                    Non Payées
+                </h6>
+
+                <h2 class="fw-bold text-danger">
+                    25
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+
+                <h6 class="text-secondary">
+                    Revenus
+                </h6>
+
+                <h2 class="fw-bold">
+                    5 000 000 FCFA
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card border-0 shadow-sm">
+
+    <div class="card-body">
+
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <div>
-            <h2 class="mb-0 fs-5">Top Products</h2>
-          </div>
+
+            <h4 class="fw-bold">
+                Liste des factures
+            </h4>
+
+            <input type="text"
+                   class="form-control w-25"
+                   placeholder="Rechercher...">
+
         </div>
 
-        <!-- Product rows -->
-        <div class="list-group list-group-flush">
-          <div class="list-group-item p-3 d-flex align-items-center">
-            <div class="me-3">
-              <img src="{{ asset('images/product-1.png') }}" alt="Product A" class="rounded" style="width:48px; height:48px; object-fit:cover;">
-            </div>
-            <div class="flex-grow-1">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="mb-0">Gaming Joy Stick</h6>
-                  <small class="text-secondary">156 units sold</small>
-                </div>
-                <div class="text-end">
-                  <strong>$3,120</strong>
-                </div>
-              </div>
-            </div>
-          </div>
+        <table class="table table-hover align-middle">
 
-          <div class="list-group-item p-3 d-flex align-items-center">
-            <div class="me-3">
-              <img src="{{ asset('images/product-2.png') }}" alt="Product B" class="rounded" style="width:48px; height:48px; object-fit:cover;">
-            </div>
-            <div class="flex-grow-1">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="mb-0">Wireless Headphones</h6>
-                  <small class="text-secondary">134 units sold</small>
-                </div>
-                <div class="text-end">
-                  <strong>$2,680</strong>
-                </div>
-              </div>
-            </div>
-          </div>
+            <thead class="table-light">
 
-          <div class="list-group-item p-3 d-flex align-items-center">
-            <div class="me-3">
-              <img src="{{ asset('images/product-3.png') }}" alt="Product C" class="rounded" style="width:48px; height:48px; object-fit:cover;">
-            </div>
-            <div class="flex-grow-1">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="mb-0">Smartwatch</h6>
-                  <small class="text-secondary">98 units sold</small>
-                </div>
-                <div class="text-end">
-                  <strong>$1,960</strong>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                <tr>
+                    <th>ID</th>
+                    <th>Client</th>
+                    <th>Produit</th>
+                    <th>Date</th>
+                    <th>Montant</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>#001</td>
+                    <td>Koura</td>
+                    <td>Ordinateur HP</td>
+                    <td>07/05/2026</td>
+                    <td>500000 FCFA</td>
+
+                    <td>
+                        <span class="badge bg-success">
+                            Payé
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <button class="btn btn-sm btn-warning">
+                            Modifier
+                        </button>
+
+                        <button class="btn btn-sm btn-danger">
+                            Supprimer
+                        </button>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>#002</td>
+                    <td>Awa</td>
+                    <td>Imprimante Canon</td>
+                    <td>07/05/2026</td>
+                    <td>150000 FCFA</td>
+
+                    <td>
+                        <span class="badge bg-danger">
+                            Non payé
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <button class="btn btn-sm btn-warning">
+                            Modifier
+                        </button>
+
+                        <button class="btn btn-sm btn-danger">
+                            Supprimer
+                        </button>
+
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
     </div>
-  </div>
+
 </div>
+
 @endsection
