@@ -12,8 +12,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/admin/dashboard', [dashdordController::class, 'index'])->name('admin.index');
-Route::get('/admin/category', [CategoryController::class, 'index'])->name('admin.category');
-Route::get('/admin/product', [ProductController::class, 'index'])->name('admin.product');
-route::get('/admin/reports', [ReportController::class, 'index'])->name('admin.reports');
+Route::get('/admin/category', [CategoriesController::class, 'index'])->name('admin.category');
+Route::get('/admin/produits', [ProduitsController::class, 'index'])->name('admin.produits');
+route::get('/admin/factures', [FacturesController::class, 'index'])->name('admin.factures');
 route::get('/admin/docs', [DocsController::class, 'index'])->name('admin.docs');
-route::get('/admin/errors', [ErrorsController::class, 'index'])->name('admin.errors');
+route::get('/admin/commandes', [CommandesController::class, 'index'])->name('admin.commandes');
