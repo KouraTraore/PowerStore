@@ -11,7 +11,6 @@ class ReportController extends Controller
     public function index()
     {
         $factures = Facture::all();
-
         return view('admin.factures', compact('factures'));
     }
 
@@ -26,39 +25,36 @@ class ReportController extends Controller
             'client_id' => $request->client_id,
             'commande_id' => $request->commande_id,
             'montant_total' => $request->montant_total,
-            'statut' => $request->statut
+            'statut' => $request->statut,
         ]);
 
-        return redirect()->route('admin.factures');
+        return redirect()->route('admin.factures.index')->with('success', 'Facture ajoutée');
     }
 
     public function edit($id)
     {
         $facture = Facture::findOrFail($id);
-
         return view('admin.edit_facture', compact('facture'));
     }
 
     public function update(Request $request, $id)
     {
         $facture = Facture::findOrFail($id);
-
         $facture->update([
             'client_id' => $request->client_id,
             'commande_id' => $request->commande_id,
             'montant_total' => $request->montant_total,
-            'statut' => $request->statut
+            'statut' => $request->statut,
         ]);
 
-        return redirect()->route('admin.factures');
+        return redirect()->route('admin.factures.index')->with('success', 'Facture modifiée');
     }
 
     public function delete($id)
     {
         $facture = Facture::findOrFail($id);
-
         $facture->delete();
 
-        return redirect()->route('admin.factures');
+        return redirect()->route('admin.factures.index')->with('success', 'Facture supprimée');
     }
 }
