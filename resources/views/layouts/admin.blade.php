@@ -124,17 +124,17 @@
 
 <!-- SIDEBAR -->
 <aside id="sidebar" class="sidebar">
-  <div class="logo-area">
-    <a href="{{ route('admin.index') }}" class="d-inline-flex align-items-center">
-      <!-- Icône seule (toujours visible) -->
-      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-        <span style="color: white; font-weight: bold; font-size: 14px;">PS</span>
-      </div>
-      <!-- Texte POWERSTOCK (disparaît quand menu fermé) -->
-      <span class="logo-text ms-2" style="font-size: 18px; font-weight: bold; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-        POWERSTOCK
-      </span>
-    </a>
+ <div class="logo-area">
+  <a href="{{ route('admin.index') }}" class="d-inline-flex align-items-center">
+    <!-- Petit icône -->
+    <img src="{{ asset('images/logo-icon.png') }}" alt="" width="32" style="border-radius: 8px;">
+    
+    <!-- Texte POWERSTOCK -->
+    <span class="logo-text" style="margin-left: 10px;">
+      <img src="{{ asset('images/logo.png') }}" alt="POWERSTOCK" height="30">
+    </span>
+  </a>
+</div>
   </div>
   <ul class="nav flex-column">
     <li class="px-4 py-2"><small class="nav-text">Main</small></li>
