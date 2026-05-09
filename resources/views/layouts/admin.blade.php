@@ -122,56 +122,60 @@
     </div>
   </nav>
 
-  <!-- SIDEBAR -->
-  <aside id="sidebar" class="sidebar">
-    <div class="logo-area">
-      <a href="{{ route('admin.index') }}" class="d-inline-flex">
-        <img src="{{ asset('images/logo-icon.png') }}" alt="" width="24">
-        <span class="logo-text ms-2"><img src="{{ asset('images/logo.png') }}" alt=""></span>
+<!-- SIDEBAR -->
+<aside id="sidebar" class="sidebar">
+  <div class="logo-area">
+    <a href="{{ route('admin.index') }}" class="d-inline-flex align-items-center">
+      <!-- Icône seule (toujours visible) -->
+      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+        <span style="color: white; font-weight: bold; font-size: 14px;">PS</span>
+      </div>
+      <!-- Texte POWERSTOCK (disparaît quand menu fermé) -->
+      <span class="logo-text ms-2" style="font-size: 18px; font-weight: bold; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        POWERSTOCK
+      </span>
+    </a>
+  </div>
+  <ul class="nav flex-column">
+    <li class="px-4 py-2"><small class="nav-text">Main</small></li>
+    <li>
+      <a class="nav-link {{ request()->routeIs('admin.index') ? 'active' : '' }}" href="{{ route('admin.index') }}">
+        <i class="ti ti-home"></i><span class="nav-text">Dashboard</span>
       </a>
-    </div>
-    <ul class="nav flex-column">
-      <li class="px-4 py-2"><small class="nav-text">Main</small></li>
-      <li>
-        <a class="nav-link {{ request()->routeIs('admin.index') ? 'active' : '' }}" href="{{ route('admin.index') }}">
-          <i class="ti ti-home"></i><span class="nav-text">Dashboard</span>
-        </a>
-      </li>
-      <li>
-        <a class="nav-link {{ request()->routeIs('admin.clients') ? 'active' : '' }}" href="{{ route('admin.clients') }}">
-          <i class="ti ti-users"></i><span class="nav-text">Clients</span>
-        </a>
-      </li>
-      
-      <li>
-        <a class="nav-link {{ request()->routeIs('admin.category') ? 'active' : '' }}" href="{{ route('admin.category') }}">
-          <i class="ti ti-box-seam"></i><span class="nav-text">Categories</span>
-        </a>
-      </li>
-      <li>
-        <a class="nav-link {{ request()->routeIs('admin.produits') ? 'active' : '' }}" href="{{ route('admin.produits') }}">
-          <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
-        </a>
-      </li>
-      <li>
-        <a class="nav-link {{ request()->routeIs('admin.commandes') ? 'active' : '' }}" href="{{ route('admin.commandes') }}">
-          <i class="ti ti-alert-circle"></i><span class="nav-text">Commandes</span>
-        </a>
-      </li>
-      
-      <!-- ✅ LIGNE CORRIGÉE ICI ✅ -->
-      <li>
-        <a class="nav-link {{ request()->routeIs('admin.factures.*') ? 'active' : '' }}" href="{{ route('admin.factures.index') }}">
-          <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
-        </a>
-      </li>
-      <!-- FIN DE LA CORRECTION -->
+    </li>
+    <li>
+      <a class="nav-link {{ request()->routeIs('admin.clients') ? 'active' : '' }}" href="{{ route('admin.clients') }}">
+        <i class="ti ti-users"></i><span class="nav-text">Clients</span>
+      </a>
+    </li>
     
-      <li class="px-4 pt-4 pb-2"><small class="nav-text">Account</small></li>
-      <li><a class="nav-link" href=""><i class="ti ti-logout"></i><span class="nav-text">Log in</span></a></li>
-      <li><a class="nav-link" href=""><i class="ti ti-user-plus"></i><span class="nav-text">Sign up</span></a></li>
-    </ul>
-  </aside>
+    <li>
+      <a class="nav-link {{ request()->routeIs('admin.category') ? 'active' : '' }}" href="{{ route('admin.category') }}">
+        <i class="ti ti-box-seam"></i><span class="nav-text">Categories</span>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link {{ request()->routeIs('admin.produits') ? 'active' : '' }}" href="{{ route('admin.produits') }}">
+        <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link {{ request()->routeIs('admin.commandes') ? 'active' : '' }}" href="{{ route('admin.commandes') }}">
+        <i class="ti ti-alert-circle"></i><span class="nav-text">Commandes</span>
+      </a>
+    </li>
+    
+    <li>
+      <a class="nav-link {{ request()->routeIs('admin.factures.*') ? 'active' : '' }}" href="{{ route('admin.factures.index') }}">
+        <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
+      </a>
+    </li>
+  
+    <li class="px-4 pt-4 pb-2"><small class="nav-text">Account</small></li>
+    <li><a class="nav-link" href=""><i class="ti ti-logout"></i><span class="nav-text">Log in</span></a></li>
+    <li><a class="nav-link" href=""><i class="ti ti-user-plus"></i><span class="nav-text">Sign up</span></a></li>
+  </ul>
+</aside>
 
   <!-- MAIN CONTENT -->
   <main id="content" class="content py-10">
