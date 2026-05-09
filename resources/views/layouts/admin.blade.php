@@ -138,10 +138,10 @@
         </a>
       </li>
       <li>
-  <a class="nav-link {{ request()->routeIs('admin.clients') ? 'active' : '' }}" href="{{ route('admin.clients') }}">
-    <i class="ti ti-users"></i><span class="nav-text">Clients</span>
-  </a>
-</li>
+        <a class="nav-link {{ request()->routeIs('admin.clients') ? 'active' : '' }}" href="{{ route('admin.clients') }}">
+          <i class="ti ti-users"></i><span class="nav-text">Clients</span>
+        </a>
+      </li>
       
       <li>
         <a class="nav-link {{ request()->routeIs('admin.category') ? 'active' : '' }}" href="{{ route('admin.category') }}">
@@ -153,16 +153,19 @@
           <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
         </a>
       </li>
-       <li>
-        <a class="nav-link" href="{{ route('admin.commandes') }}">
+      <li>
+        <a class="nav-link {{ request()->routeIs('admin.commandes') ? 'active' : '' }}" href="{{ route('admin.commandes') }}">
           <i class="ti ti-alert-circle"></i><span class="nav-text">Commandes</span>
         </a>
       </li>
+      
+      <!-- ✅ LIGNE CORRIGÉE ICI ✅ -->
       <li>
-        <a class="nav-link" href="{{ route('admin.factures') }}">
+        <a class="nav-link {{ request()->routeIs('admin.factures.*') ? 'active' : '' }}" href="{{ route('admin.factures.index') }}">
           <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
         </a>
       </li>
+      <!-- FIN DE LA CORRECTION -->
     
       <li class="px-4 pt-4 pb-2"><small class="nav-text">Account</small></li>
       <li><a class="nav-link" href=""><i class="ti ti-logout"></i><span class="nav-text">Log in</span></a></li>
