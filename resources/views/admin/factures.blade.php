@@ -204,17 +204,11 @@
                         </td>
                         <td>
                             @if($facture->statut == 'Payé')
-                                <span class="badge statut-paye px-3 py-2 rounded-pill">
-                                    ✅ Payé
-                                </span>
+                                <span class="badge statut-paye px-3 py-2 rounded-pill">✅ Payé</span>
                             @elseif($facture->statut == 'Partiel')
-                                <span class="badge statut-partiel px-3 py-2 rounded-pill">
-                                    ⏳ Partiel
-                                </span>
+                                <span class="badge statut-partiel px-3 py-2 rounded-pill">⏳ Partiel</span>
                             @else
-                                <span class="badge statut-non-paye px-3 py-2 rounded-pill">
-                                    ❌ Non payé
-                                </span>
+                                <span class="badge statut-non-paye px-3 py-2 rounded-pill">❌ Non payé</span>
                             @endif
                         </td>
                         <td>
@@ -239,17 +233,12 @@
                                    title="Modifier">
                                     ✏️
                                 </a>
-                                <!-- PDF -->
+                                <!-- PDF / Imprimer -->
                                 <a href="{{ route('admin.factures.pdf', $facture->id) }}" 
-                                   class="btn btn-sm btn-outline-danger btn-action" 
-                                   title="Télécharger PDF">
+                                   class="btn btn-sm btn-outline-info btn-action" 
+                                   title="Télécharger PDF"
+                                   target="_blank">
                                     📄
-                                </a>
-                                <!-- Email -->
-                                <a href="{{ route('admin.factures.email', $facture->id) }}" 
-                                   class="btn btn-sm btn-outline-success btn-action" 
-                                   title="Envoyer par email">
-                                    📧
                                 </a>
                                 <!-- Supprimer -->
                                 <a href="{{ route('admin.factures.delete', $facture->id) }}" 
@@ -265,7 +254,6 @@
                     <tr>
                         <td colspan="8" class="text-center py-5">
                             📭 Aucune facture trouvée
-                            <h5 class="text-secondary">Commencez par ajouter une nouvelle facture</h5>
                         </td>
                     </tr>
                     @endforelse
