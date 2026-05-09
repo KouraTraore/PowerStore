@@ -150,7 +150,7 @@
                     <option value="Non payé">Non payé</option>
                 </select>
                 <a href="{{ route('admin.factures.export.all') }}" class="btn btn-success">
-                    <i class="ti ti-file-pdf"></i> Exporter tout
+                    📑 Exporter tout
                 </a>
             </div>
         </div>
@@ -205,43 +205,58 @@
                         <td>
                             @if($facture->statut == 'Payé')
                                 <span class="badge statut-paye px-3 py-2 rounded-pill">
-                                    <i class="ti ti-check-circle me-1"></i> Payé
+                                    ✅ Payé
                                 </span>
                             @elseif($facture->statut == 'Partiel')
                                 <span class="badge statut-partiel px-3 py-2 rounded-pill">
-                                    <i class="ti ti-clock me-1"></i> Partiel
+                                    ⏳ Partiel
                                 </span>
                             @else
                                 <span class="badge statut-non-paye px-3 py-2 rounded-pill">
-                                    <i class="ti ti-x-circle me-1"></i> Non payé
+                                    ❌ Non payé
                                 </span>
                             @endif
                         </td>
                         <td>
                             @if($facture->mode_paiement)
-                                <span class="badge bg-secondary">{{ $facture->mode_paiement }}</span>
+                                <span class="badge bg-secondary">
+                                    @if($facture->mode_paiement == 'Espèces') 💰
+                                    @elseif($facture->mode_paiement == 'Carte') 💳
+                                    @elseif($facture->mode_paiement == 'Mobile Money') 📱
+                                    @elseif($facture->mode_paiement == 'Virement') 🏦
+                                    @endif
+                                    {{ $facture->mode_paiement }}
+                                </span>
                             @else
                                 <span class="text-muted">-</span>
                             @endif
                         </td>
                         <td class="pe-4 text-center">
                             <div class="btn-group" role="group">
+                                <!-- Modifier -->
                                 <a href="{{ route('admin.factures.edit', $facture->id) }}" 
-                                   class="btn btn-sm btn-outline-primary btn-action" title="Modifier">
-                                    <i class="ti ti-edit"></i>
+                                   class="btn btn-sm btn-outline-primary btn-action" 
+                                   title="Modifier">
+                                    ✏️
                                 </a>
+                                <!-- PDF -->
                                 <a href="{{ route('admin.factures.pdf', $facture->id) }}" 
-                                   class="btn btn-sm btn-outline-info btn-action" title="PDF">
-                                    <i class="ti ti-file-pdf"></i>
+                                   class="btn btn-sm btn-outline-danger btn-action" 
+                                   title="Télécharger PDF">
+                                    📄
                                 </a>
+                                <!-- Email -->
                                 <a href="{{ route('admin.factures.email', $facture->id) }}" 
-                                   class="btn btn-sm btn-outline-success btn-action" title="Envoyer par email">
-                                    <i class="ti ti-mail"></i>
+                                   class="btn btn-sm btn-outline-success btn-action" 
+                                   title="Envoyer par email">
+                                    📧
                                 </a>
+                                <!-- Supprimer -->
                                 <a href="{{ route('admin.factures.delete', $facture->id) }}" 
-                                   class="btn btn-sm btn-outline-danger btn-action" title="Supprimer"
+                                   class="btn btn-sm btn-outline-danger btn-action" 
+                                   title="Supprimer"
                                    onclick="return confirm('Supprimer cette facture ?')">
-                                    <i class="ti ti-trash"></i>
+                                    🗑️
                                 </a>
                             </div>
                         </td>
@@ -249,9 +264,8 @@
                     @empty
                     <tr>
                         <td colspan="8" class="text-center py-5">
-                            <i class="ti ti-file-invoice fs-1 text-secondary mb-3 d-block"></i>
-                            <h5 class="text-secondary">Aucune facture trouvée</h5>
-                            <p class="text-secondary mb-0">Commencez par ajouter une nouvelle facture</p>
+                            📭 Aucune facture trouvée
+                            <h5 class="text-secondary">Commencez par ajouter une nouvelle facture</h5>
                         </td>
                     </tr>
                     @endforelse
