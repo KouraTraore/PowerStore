@@ -122,58 +122,56 @@
     </div>
   </nav>
 
-<!-- SIDEBAR -->
-<aside id="sidebar" class="sidebar">
- <div class="logo-area">
-  <a href="{{ route('admin.index') }}" class="d-inline-flex align-items-center">
-    <!-- Petit icône (toujours visible) -->
-    <img id="logoIcone" src="{{ asset('images/logo-icon.png') }}" alt="" width="32" style="border-radius: 8px;">
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="sidebar">
+    <div class="logo-area">
+      <a href="{{ route('admin.index') }}" class="d-inline-flex">
+        <img src="{{ asset('images/logo-icon.svg') }}" alt="" width="24">
+        <span class="logo-text ms-2"><img src="{{ asset('images/logo.svg') }}" alt=""></span>
+      </a>
+    </div>
+    <ul class="nav flex-column">
+      <li class="px-4 py-2"><small class="nav-text">Main</small></li>
+      <li>
+        <a class="nav-link {{ request()->routeIs('admin.index') ? 'active' : '' }}" href="{{ route('admin.index') }}">
+          <i class="ti ti-home"></i><span class="nav-text">Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a class="nav-link {{ request()->routeIs('admin.clients') ? 'active' : '' }}" href="{{ route('admin.clients') }}">
+          <i class="ti ti-users"></i><span class="nav-text">Clients</span>
+        </a>
+      </li>
+      
+      <li>
+        <a class="nav-link {{ request()->routeIs('admin.category') ? 'active' : '' }}" href="{{ route('admin.category') }}">
+          <i class="ti ti-box-seam"></i><span class="nav-text">Categories</span>
+        </a>
+      </li>
+      <li>
+        <a class="nav-link {{ request()->routeIs('admin.produits') ? 'active' : '' }}" href="{{ route('admin.produits') }}">
+          <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
+        </a>
+      </li>
+      <li>
+        <a class="nav-link {{ request()->routeIs('admin.commandes') ? 'active' : '' }}" href="{{ route('admin.commandes') }}">
+          <i class="ti ti-alert-circle"></i><span class="nav-text">Commandes</span>
+        </a>
+      </li>
+      
+      <!-- ✅ LIGNE CORRIGÉE ICI ✅ -->
+      <li>
+        <a class="nav-link {{ request()->routeIs('admin.factures.*') ? 'active' : '' }}" href="{{ route('admin.factures.index') }}">
+          <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
+        </a>
+      </li>
+      <!-- FIN DE LA CORRECTION -->
     
-    <!-- Grand texte POWERSTOCK (disparaît quand menu fermé) -->
-    <img id="logoTexte" src="{{ asset('images/logo.png') }}" alt="POWERSTOCK" height="30" style="margin-left: 10px;">
-  </a>
-</div>
-  </div>
-  <ul class="nav flex-column">
-    <li class="px-4 py-2"><small class="nav-text">Main</small></li>
-    <li>
-      <a class="nav-link {{ request()->routeIs('admin.index') ? 'active' : '' }}" href="{{ route('admin.index') }}">
-        <i class="ti ti-home"></i><span class="nav-text">Dashboard</span>
-      </a>
-    </li>
-    <li>
-      <a class="nav-link {{ request()->routeIs('admin.clients') ? 'active' : '' }}" href="{{ route('admin.clients') }}">
-        <i class="ti ti-users"></i><span class="nav-text">Clients</span>
-      </a>
-    </li>
-    
-    <li>
-      <a class="nav-link {{ request()->routeIs('admin.category') ? 'active' : '' }}" href="{{ route('admin.category') }}">
-        <i class="ti ti-box-seam"></i><span class="nav-text">Categories</span>
-      </a>
-    </li>
-    <li>
-      <a class="nav-link {{ request()->routeIs('admin.produits') ? 'active' : '' }}" href="{{ route('admin.produits') }}">
-        <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
-      </a>
-    </li>
-    <li>
-      <a class="nav-link {{ request()->routeIs('admin.commandes') ? 'active' : '' }}" href="{{ route('admin.commandes') }}">
-        <i class="ti ti-alert-circle"></i><span class="nav-text">Commandes</span>
-      </a>
-    </li>
-    
-    <li>
-      <a class="nav-link {{ request()->routeIs('admin.factures.*') ? 'active' : '' }}" href="{{ route('admin.factures.index') }}">
-        <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
-      </a>
-    </li>
-  
-    <li class="px-4 pt-4 pb-2"><small class="nav-text">Account</small></li>
-    <li><a class="nav-link" href=""><i class="ti ti-logout"></i><span class="nav-text">Log in</span></a></li>
-    <li><a class="nav-link" href=""><i class="ti ti-user-plus"></i><span class="nav-text">Sign up</span></a></li>
-  </ul>
-</aside>
+      <li class="px-4 pt-4 pb-2"><small class="nav-text">Account</small></li>
+      <li><a class="nav-link" href=""><i class="ti ti-logout"></i><span class="nav-text">Log in</span></a></li>
+      <li><a class="nav-link" href=""><i class="ti ti-user-plus"></i><span class="nav-text">Sign up</span></a></li>
+    </ul>
+  </aside>
 
   <!-- MAIN CONTENT -->
   <main id="content" class="content py-10">
@@ -189,42 +187,6 @@
       </div>
     </div>
   </main>
-  <script>
-    // Attendre que la page soit chargée
-    document.addEventListener('DOMContentLoaded', function() {
-        var toggleBtn = document.getElementById('toggleBtn');
-        var mobileBtn = document.getElementById('mobileBtn');
-        var sidebar = document.getElementById('sidebar');
-        var logoTexte = document.getElementById('logoTexte');
-        
-        if (!toggleBtn || !sidebar || !logoTexte) return;
-        
-        // Fonction pour cacher/montrer le texte
-        function updateLogo() {
-            if (sidebar.classList.contains('collapsed')) {
-                logoTexte.style.display = 'none';
-            } else {
-                logoTexte.style.display = 'inline-block';
-            }
-        }
-        
-        // Bouton pour fermer/ouvrir
-        toggleBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-            updateLogo();
-        });
-        
-        if (mobileBtn) {
-            mobileBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('collapsed');
-                updateLogo();
-            });
-        }
-        
-        // Au chargement, vérifier l'état
-        updateLogo();
-    });
-</script>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
