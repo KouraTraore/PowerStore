@@ -126,13 +126,11 @@
 <aside id="sidebar" class="sidebar">
  <div class="logo-area">
   <a href="{{ route('admin.index') }}" class="d-inline-flex align-items-center">
-    <!-- Petit icône -->
-    <img src="{{ asset('images/logo-icon.png') }}" alt="" width="32" style="border-radius: 8px;">
+    <!-- Petit icône (toujours visible) -->
+    <img id="logoIcone" src="{{ asset('images/logo-icon.png') }}" alt="" width="32" style="border-radius: 8px;">
     
-    <!-- Texte POWERSTOCK -->
-    <span class="logo-text" style="margin-left: 10px;">
-      <img src="{{ asset('images/logo.png') }}" alt="POWERSTOCK" height="30">
-    </span>
+    <!-- Grand texte POWERSTOCK (disparaît quand menu fermé) -->
+    <img id="logoTexte" src="{{ asset('images/logo.png') }}" alt="POWERSTOCK" height="30" style="margin-left: 10px;">
   </a>
 </div>
   </div>
@@ -191,6 +189,42 @@
       </div>
     </div>
   </main>
+  <script>
+    // Attendre que la page soit chargée
+    document.addEventListener('DOMContentLoaded', function() {
+        var toggleBtn = document.getElementById('toggleBtn');
+        var mobileBtn = document.getElementById('mobileBtn');
+        var sidebar = document.getElementById('sidebar');
+        var logoTexte = document.getElementById('logoTexte');
+        
+        if (!toggleBtn || !sidebar || !logoTexte) return;
+        
+        // Fonction pour cacher/montrer le texte
+        function updateLogo() {
+            if (sidebar.classList.contains('collapsed')) {
+                logoTexte.style.display = 'none';
+            } else {
+                logoTexte.style.display = 'inline-block';
+            }
+        }
+        
+        // Bouton pour fermer/ouvrir
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            updateLogo();
+        });
+        
+        if (mobileBtn) {
+            mobileBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                updateLogo();
+            });
+        }
+        
+        // Au chargement, vérifier l'état
+        updateLogo();
+    });
+</script>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
