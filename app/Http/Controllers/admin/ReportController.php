@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Facture;
 
 class ReportController extends Controller
 {
     public function index()
     {
-        return view('admin.factures');
+        $factures = Facture::all();
+
+        return view('admin.factures', compact('factures'));
     }
 }
