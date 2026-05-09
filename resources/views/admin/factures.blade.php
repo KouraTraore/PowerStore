@@ -22,9 +22,7 @@
 
     .table-hover tbody tr:hover {
         background-color: #f8f9fa;
-        transform: scale(1.01);
         transition: all 0.2s ease;
-        cursor: pointer;
     }
 
     .btn-action {
@@ -47,268 +45,243 @@
 
 <div class="row mb-4">
     <div class="col-12">
-
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-
             <div>
                 <h1 class="fs-2 fw-bold mb-1">
                     <i class="ti ti-file-invoice me-2"></i>
                     Factures
                 </h1>
-
                 <p class="text-secondary mb-0">
+                    <i class="ti ti-receipt"></i>
                     Gestion des factures des clients
                 </p>
             </div>
 
-            <a href="{{ route('admin.factures.create') }}"
-               class="btn btn-primary btn-lg shadow-sm">
-
+            <a href="{{ route('admin.factures.create') }}" class="btn btn-primary btn-lg shadow-sm">
                 <i class="ti ti-plus me-2"></i>
                 Nouvelle facture
-
             </a>
-
         </div>
-
     </div>
 </div>
 
 <!-- Statistiques -->
-
 <div class="row g-3 mb-4">
-
     <div class="col-md-3">
-
         <div class="card card-stats shadow-sm border-0 facture-card">
-
             <div class="card-body">
-
-                <h6>Total Factures</h6>
-
-                <h2 class="fw-bold">
-                    {{ $factures->count() }}
-                </h2>
-
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-white-50 mb-2">
+                            <i class="ti ti-file-invoice"></i> Total Factures
+                        </h6>
+                        <h2 class="fw-bold mb-0">
+                            {{ $factures->count() }}
+                        </h2>
+                    </div>
+                    <div>
+                        <i class="ti ti-receipt fs-1 text-white-50"></i>
+                    </div>
+                </div>
             </div>
-
         </div>
-
     </div>
 
     <div class="col-md-3">
-
         <div class="card bg-success bg-opacity-10 shadow-sm border-0 facture-card">
-
             <div class="card-body">
-
-                <h6 class="text-success">
-                    Factures Payées
-                </h6>
-
-                <h2 class="fw-bold text-success">
-                    {{ $factures->where('statut', 'Payé')->count() }}
-                </h2>
-
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-success mb-2">
+                            <i class="ti ti-check-circle"></i> Payées
+                        </h6>
+                        <h2 class="fw-bold text-success mb-0">
+                            {{ $factures->where('statut', 'Payé')->count() }}
+                        </h2>
+                    </div>
+                    <div>
+                        <i class="ti ti-check-circle fs-1 text-success opacity-50"></i>
+                    </div>
+                </div>
             </div>
-
         </div>
-
     </div>
 
     <div class="col-md-3">
-
         <div class="card bg-danger bg-opacity-10 shadow-sm border-0 facture-card">
-
             <div class="card-body">
-
-                <h6 class="text-danger">
-                    Non Payées
-                </h6>
-
-                <h2 class="fw-bold text-danger">
-                    {{ $factures->where('statut', 'Non payé')->count() }}
-                </h2>
-
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-danger mb-2">
+                            <i class="ti ti-x-circle"></i> Non payées
+                        </h6>
+                        <h2 class="fw-bold text-danger mb-0">
+                            {{ $factures->where('statut', 'Non payé')->count() }}
+                        </h2>
+                    </div>
+                    <div>
+                        <i class="ti ti-x-circle fs-1 text-danger opacity-50"></i>
+                    </div>
+                </div>
             </div>
-
         </div>
-
     </div>
 
     <div class="col-md-3">
-
         <div class="card bg-info bg-opacity-10 shadow-sm border-0 facture-card">
-
             <div class="card-body">
-
-                <h6 class="text-info">
-                    Montant Total
-                </h6>
-
-                <h2 class="fw-bold text-info">
-
-                    {{ number_format($factures->sum('montant_total'), 0, ',', ' ') }}
-
-                    FCFA
-
-                </h2>
-
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-info mb-2">
+                            <i class="ti ti-currency-cfa"></i> Montant total
+                        </h6>
+                        <h2 class="fw-bold text-info mb-0">
+                            {{ number_format($factures->sum('montant_total'), 0, ',', ' ') }} FCFA
+                        </h2>
+                    </div>
+                    <div>
+                        <i class="ti ti-chart-bar fs-1 text-info opacity-50"></i>
+                    </div>
+                </div>
             </div>
-
         </div>
-
     </div>
-
 </div>
 
-<!-- Tableau -->
-
+<!-- Tableau des factures -->
 <div class="card border-0 shadow-lg facture-card">
-
     <div class="card-header bg-white border-0 pt-4 px-4">
-
-        <div class="d-flex justify-content-between align-items-center">
-
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
             <h4 class="fw-bold mb-0">
+                <i class="ti ti-list-details me-2"></i>
                 Liste des factures
             </h4>
 
-            <input type="text"
-                   class="form-control w-25"
-                   placeholder="Rechercher...">
+            <div class="d-flex gap-2">
+                <div class="input-group" style="width: 300px;">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="ti ti-search"></i>
+                    </span>
+                    <input type="text"
+                           id="searchInput"
+                           class="form-control border-start-0"
+                           placeholder="Rechercher...">
+                </div>
 
+                <select class="form-select" style="width: 150px;" id="statutFilter">
+                    <option value="">Tous</option>
+                    <option value="Payé">Payé</option>
+                    <option value="Non payé">Non payé</option>
+                </select>
+            </div>
         </div>
-
     </div>
 
     <div class="card-body p-0">
-
         <div class="table-responsive">
-
             <table class="table table-hover mb-0">
-
                 <thead class="bg-light">
-
                     <tr>
-
-                        <th>ID</th>
-                        <th>Client</th>
-                        <th>Commande</th>
-                        <th>Montant</th>
-                        <th>Statut</th>
-                        <th>Actions</th>
-
+                        <th class="border-0 ps-4 py-3">N° Facture</th>
+                        <th class="border-0 py-3">Client</th>
+                        <th class="border-0 py-3">Commande</th>
+                        <th class="border-0 py-3">Date</th>
+                        <th class="border-0 py-3">Montant</th>
+                        <th class="border-0 py-3">Statut</th>
+                        <th class="border-0 pe-4 py-3 text-center">Actions</th>
                     </tr>
-
                 </thead>
-
-                <tbody>
-
+                <tbody id="facturesTable">
                     @forelse($factures as $facture)
-
-                    <tr>
-
-                        <td>
-                            #{{ $facture->id }}
+                    <tr class="facture-row">
+                        <td class="ps-4">
+                            <strong class="text-primary">#{{ $facture->id }}</strong>
                         </td>
-
                         <td>
-
-                            {{ $facture->client->nom ?? 'Client '.$facture->client_id }}
-
-                        </td>
-
-                        <td>
-
-                            #CMD-{{ $facture->commande_id }}
-
-                        </td>
-
-                        <td>
-
-                            {{ number_format($facture->montant_total, 0, ',', ' ') }}
-
-                            FCFA
-
-                        </td>
-
-                        <td>
-
-                            @if($facture->statut == 'Payé')
-
-                                <span class="badge statut-paye px-3 py-2 rounded-pill">
-
-                                    Payé
-
-                                </span>
-
+                            @if($facture->client)
+                                <strong>{{ $facture->client->nom ?? 'Client' }}</strong>
+                                <small class="d-block text-muted">{{ $facture->client->adresse ?? '' }}</small>
                             @else
-
-                                <span class="badge statut-non-paye px-3 py-2 rounded-pill">
-
-                                    Non payé
-
-                                </span>
-
+                                Client #{{ $facture->client_id }}
                             @endif
-
                         </td>
-
                         <td>
-
-                            <div class="d-flex gap-2">
-
-                                <!-- Modifier -->
-
-                                <a href="{{ route('admin.factures.edit', $facture->id) }}"
-                                   class="btn btn-sm btn-outline-primary">
-
+                            <span class="badge bg-secondary">
+                                #CMD-{{ $facture->commande_id ?? 'N/A' }}
+                            </span>
+                        </td>
+                        <td>
+                            <i class="ti ti-calendar-time me-1"></i>
+                            {{ $facture->created_at ? $facture->created_at->format('d/m/Y') : 'Date inconnue' }}
+                        </td>
+                        <td>
+                            <strong class="text-dark">
+                                {{ number_format($facture->montant_total, 0, ',', ' ') }} FCFA
+                            </strong>
+                        </td>
+                        <td>
+                            @if($facture->statut == 'Payé')
+                                <span class="badge statut-paye px-3 py-2 rounded-pill">
+                                    <i class="ti ti-check-circle me-1"></i> Payé
+                                </span>
+                            @else
+                                <span class="badge statut-non-paye px-3 py-2 rounded-pill">
+                                    <i class="ti ti-clock me-1"></i> Non payé
+                                </span>
+                            @endif
+                        </td>
+                        <td class="pe-4 text-center">
+                            <div class="btn-group" role="group">
+                                <a href="{{ route('admin.factures.edit', $facture->id) }}" 
+                                   class="btn btn-sm btn-outline-primary btn-action"
+                                   title="Modifier">
                                     <i class="ti ti-edit"></i>
-
                                 </a>
-
-                                <!-- Supprimer -->
-
-                                <a href="{{ route('admin.factures.delete', $facture->id) }}"
-                                   class="btn btn-sm btn-outline-danger">
-
+                                <a href="{{ route('admin.factures.delete', $facture->id) }}" 
+                                   class="btn btn-sm btn-outline-danger btn-action"
+                                   title="Supprimer"
+                                   onclick="return confirm('Supprimer cette facture ?')">
                                     <i class="ti ti-trash"></i>
-
                                 </a>
-
                             </div>
-
                         </td>
-
                     </tr>
-
                     @empty
-
                     <tr>
-
-                        <td colspan="6" class="text-center py-5">
-
-                            <h5 class="text-secondary">
-
-                                Aucune facture trouvée
-
-                            </h5>
-
+                        <td colspan="7" class="text-center py-5">
+                            <i class="ti ti-file-invoice fs-1 text-secondary mb-3 d-block"></i>
+                            <h5 class="text-secondary">Aucune facture trouvée</h5>
+                            <p class="text-secondary mb-0">Commencez par ajouter une nouvelle facture</p>
                         </td>
-
                     </tr>
-
                     @endforelse
-
                 </tbody>
-
             </table>
-
         </div>
-
     </div>
-
 </div>
+
+<script>
+    // Recherche et filtrage
+    document.getElementById('searchInput').addEventListener('keyup', filterTable);
+    document.getElementById('statutFilter').addEventListener('change', filterTable);
+
+    function filterTable() {
+        const searchText = document.getElementById('searchInput').value.toLowerCase();
+        const statutFilter = document.getElementById('statutFilter').value;
+        const rows = document.querySelectorAll('.facture-row');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const statutCell = row.cells[5];
+            const statut = statutCell.textContent.trim();
+            
+            let matchesSearch = text.includes(searchText);
+            let matchesStatut = !statutFilter || statut.includes(statutFilter);
+            
+            row.style.display = (matchesSearch && matchesStatut) ? '' : 'none';
+        });
+    }
+</script>
 
 @endsection

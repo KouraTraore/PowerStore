@@ -18,8 +18,15 @@ class Facture extends Model
         'statut'
     ];
 
+    // Relation avec Client
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    // Relation avec Commande
+    public function commande()
+    {
+        return $this->belongsTo(Commande::class);
     }
 }
