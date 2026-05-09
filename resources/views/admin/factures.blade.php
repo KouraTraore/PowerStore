@@ -179,8 +179,8 @@
                         </td>
                         <td>
                             @if($facture->client)
-                                <strong>{{ $facture->client->nom ?? 'Client' }}</strong>
-                                <small class="d-block text-muted">{{ $facture->client->telephone ?? '' }}</small>
+                               <strong>{{ $facture->client->prenom ?? '' }} {{ $facture->client->nomc ?? 'Client' }}</strong>
+                                <small class="d-block text-muted">{{ $facture->client->tel ?? '' }}</small>
                             @else
                                 Client #{{ $facture->client_id }}
                             @endif

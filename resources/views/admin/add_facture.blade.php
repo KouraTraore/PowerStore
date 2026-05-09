@@ -34,7 +34,9 @@
                     <select name="client_id" class="form-select form-select-lg" required>
                         <option value="">Sélectionner un client</option>
                         @foreach($clients as $client)
-                        <option value="{{ $client->id }}">{{ $client->nom }} - {{ $client->telephone ?? '' }}</option>
+                        <option value="{{ $client->id }}">
+                            {{ $client->prenom }} {{ $client->nomc }} - {{ $client->tel ?? 'Pas de téléphone' }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
