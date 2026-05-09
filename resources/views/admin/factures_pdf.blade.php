@@ -91,7 +91,7 @@
                     <span class="statut statut-{{ strtolower(str_replace(' ', '-', $facture->statut)) }}">
                         {{ $facture->statut }}
                     </span>
-                </td>
+                 </td>
                 <td><strong>Lieu:</strong> Bamako</td>
             </tr>
         </table>
@@ -99,10 +99,10 @@
 
     <div class="client-info">
         <h3>📋 Informations client</h3>
-        <p><strong>Nom:</strong> {{ $facture->client->nom ?? 'Client N°'.$facture->client_id }}</p>
+        <p><strong>Nom:</strong> {{ $facture->client->prenom ?? '' }} {{ $facture->client->nomc ?? 'Client N°'.$facture->client_id }}</p>
         <p><strong>Adresse:</strong> {{ $facture->client->adresse ?? 'Non renseignée' }}</p>
-        <p><strong>Téléphone:</strong> {{ $facture->client->telephone ?? 'Non renseigné' }}</p>
-        @if($facture->client->email)
+        <p><strong>Téléphone:</strong> {{ $facture->client->tel ?? 'Non renseigné' }}</p>
+        @if($facture->client && $facture->client->email)
         <p><strong>Email:</strong> {{ $facture->client->email }}</p>
         @endif
     </div>
@@ -149,7 +149,7 @@
     <div style="margin-top: 20px; padding: 10px; background: #e8f4fd; border-radius: 5px;">
         <strong>💳 Informations de paiement:</strong><br>
         Mode: {{ $facture->mode_paiement }}<br>
-        @if($facture->date_paiement) Date: {{ $facture->date_paiement->format('d/m/Y') }}<br> @endif
+        @if($facture->date_paiement) Date: {{ \Carbon\Carbon::parse($facture->date_paiement)->format('d/m/Y') }}<br> @endif
         @if($facture->reference_paiement) Référence: {{ $facture->reference_paiement }}<br> @endif
     </div>
     @endif
