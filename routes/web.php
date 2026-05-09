@@ -33,18 +33,21 @@ Route::get('/admin/commandes', [ErrorsController::class, 'index'])->name('admin.
 
 // ========== ROUTES FACTURES ==========
 Route::prefix('admin')->name('admin.')->group(function () {
-    // Liste des factures
+    // Gestion des factures
     Route::get('/factures', [ReportController::class, 'index'])->name('factures.index');
-    
-    // Ajouter une facture
     Route::get('/factures/create', [ReportController::class, 'create'])->name('factures.create');
     Route::post('/factures', [ReportController::class, 'store'])->name('factures.store');
-    
-    // Modifier une facture
     Route::get('/factures/{id}/edit', [ReportController::class, 'edit'])->name('factures.edit');
     Route::put('/factures/{id}', [ReportController::class, 'update'])->name('factures.update');
-    
-    // Supprimer une facture
     Route::get('/factures/{id}/delete', [ReportController::class, 'delete'])->name('factures.delete');
-    Route::delete('/factures/{id}', [ReportController::class, 'destroy'])->name('factures.destroy');
+    
+    // Export PDF
+    Route::get('/factures/{id}/pdf', [ReportController::class, 'exportPdf'])->name('factures.pdf');
+    Route::get('/factures/export/all', [ReportController::class, 'exportAllPdf'])->name('factures.export.all');
+    
+    // Email
+    Route::get('/factures/{id}/email', [ReportController::class, 'sendEmail'])->name('factures.email');
+    
+    // Dashboard paiements
+    Route::get('/paiements/dashboard', [ReportController::class, 'paiementsDashboard'])->name('paiements.dashboard');
 });

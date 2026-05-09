@@ -12,11 +12,10 @@
                     <i class="ti ti-plus-circle me-2"></i>
                     Ajouter une facture
                 </h1>
-                <p class="text-secondary">Créer une nouvelle facture</p>
+                <p class="text-secondary">Créer une nouvelle facture avec gestion de paiement</p>
             </div>
             <a href="{{ route('admin.factures.index') }}" class="btn btn-secondary">
-                <i class="ti ti-arrow-left"></i>
-                Retour
+                <i class="ti ti-arrow-left"></i> Retour
             </a>
         </div>
     </div>
@@ -30,63 +29,88 @@
             <div class="row">
                 <div class="col-md-6 mb-4">
                     <label class="form-label fw-bold">
-                        <i class="ti ti-user"></i> Client ID
+                        <i class="ti ti-user"></i> Client *
                     </label>
-                    <input type="number" 
-                           name="client_id" 
-                           class="form-control form-control-lg" 
-                           placeholder="Entrez l'ID du client"
-                           required>
-                    <small class="text-muted">L'ID du client dans la base de données</small>
-                </div>
-
-                <div class="col-md-6 mb-4">
-                    <label class="form-label fw-bold">
-                        <i class="ti ti-package"></i> Commande ID
-                    </label>
-                    <input type="number" 
-                           name="commande_id" 
-                           class="form-control form-control-lg" 
-                           placeholder="Optionnel">
-                    <small class="text-muted">Optionnel - Lier à une commande existante</small>
-                </div>
-
-                <div class="col-md-6 mb-4">
-                    <label class="form-label fw-bold">
-                        <i class="ti ti-currency-cfa"></i> Montant total
-                    </label>
-                    <input type="number" 
-                           name="montant_total" 
-                           class="form-control form-control-lg" 
-                           placeholder="Ex: 750000"
-                           step="1000"
-                           required>
-                </div>
-
-                <div class="col-md-6 mb-4">
-                    <label class="form-label fw-bold">
-                        <i class="ti ti-status-change"></i> Statut
-                    </label>
-                    <select name="statut" class="form-select form-select-lg" required>
-                        <option value="Non payé">⏳ Non payé</option>
-                        <option value="Payé">✅ Payé</option>
+                    <select name="client_id" class="form-select form-select-lg" required>
+                        <option value="">Sélectionner un client</option>
+                        @foreach($clients as $client)
+                        <option value="{{ $client->id }}">{{ $client->nom }} - {{ $client->telephone ?? '' }}</option>
+                        @endforeach
                     </select>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label class="form-label fw-bold">
+                        <i class="ti ti-currency-cfa"></i> Montant total *
+                    </label>
+                    <input type="number" name="montant_total" class="form-control form-control-lg" 
+                           placeholder="Ex: 750000" step="1000" required id="montant_total">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label class="form-label fw-bold">
+                        <i class="ti ti-moneybag"></i> Montant payé
+                    </label>
+                    <input type="number" name="montant_paye" class="form-control form-control-lg" 
+                           value="0" step="1000" id="montant_paye">
+                    <small class="text-muted">0 = paiement futur | Montant total = payé intégralement</small>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label class="form-label fw-bold">
+                        <i class="ti ti-credit-card"></i> Mode de paiement
+                    </label>
+                    <select name="mode_paiement" class="form-select form-select-lg">
+                        <option value="">Sélectionner</option>
+                        <option value="Espèces">💰 Espèces</option>
+                        <option value="Carte">💳 Carte bancaire</option>
+                        <option value="Mobile Money">📱 Mobile Money</option>
+                        <option value="Virement">🏦 Virement bancaire</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label class="form-label fw-bold">
+                        <i class="ti ti-calendar"></i> Date de paiement
+                    </label>
+                    <input type="date" name="date_paiement" class="form-control form-control-lg">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label class="form-label fw-bold">
+                        <i class="ti ti-barcode"></i> Référence paiement
+                    </label>
+                    <input type="text" name="reference_paiement" class="form-control form-control-lg" 
+                           placeholder="Ex: TRX-2026-001">
                 </div>
 
                 <div class="col-12">
                     <hr>
+                    <div class="alert alert-info">
+                        <i class="ti ti-info-circle"></i>
+                        Le statut sera automatiquement défini selon le montant payé
+                    </div>
                     <button type="submit" class="btn btn-primary btn-lg px-5">
-                        <i class="ti ti-device-floppy"></i>
-                        Enregistrer la facture
+                        <i class="ti ti-device-floppy"></i> Enregistrer la facture
                     </button>
                     <a href="{{ route('admin.factures.index') }}" class="btn btn-secondary btn-lg px-4">
-                        <i class="ti ti-x"></i>
-                        Annuler
+                        <i class="ti ti-x"></i> Annuler
                     </a>
                 </div>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+    document.getElementById('montant_paye').addEventListener('input', function() {
+        let total = parseFloat(document.getElementById('montant_total').value) || 0;
+        let paye = parseFloat(this.value) || 0;
+        if(paye > total) {
+            this.value = total;
+            alert('Le montant payé ne peut pas dépasser le montant total !');
+        }
+    });
+</script>
 
 @endsection
