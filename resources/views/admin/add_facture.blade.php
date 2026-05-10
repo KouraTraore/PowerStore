@@ -62,7 +62,7 @@
                     <label class="form-label fw-bold">
                         <i class="ti ti-credit-card"></i> Mode de paiement
                     </label>
-                    <select name="mode_paiement" class="form-select form-select-lg">
+                    <select name="mode_paiement" id="mode_paiement" class="form-select form-select-lg">
                         <option value="">Sélectionner</option>
                         <option value="Espèces">💰 Espèces</option>
                         <option value="Carte">💳 Carte bancaire</option>
@@ -82,8 +82,11 @@
                     <label class="form-label fw-bold">
                         <i class="ti ti-barcode"></i> Référence paiement
                     </label>
-                    <input type="text" name="reference_paiement" class="form-control form-control-lg" 
-                           placeholder="Ex: TRX-2026-001">
+                    <input type="text" name="reference_paiement" id="reference_paiement" class="form-control form-control-lg" 
+                           readonly style="background-color: #f5f5f5;">
+                    <small class="text-muted" id="referenceHint">
+                        🔄 Généré automatiquement
+                    </small>
                 </div>
 
                 <div class="col-12">
@@ -105,14 +108,59 @@
 </div>
 
 <script>
-    document.getElementById('montant_paye').addEventListener('input', function() {
+    // Générer une référence automatique
+    function genererReference() {
+        const mode = document.getElementById('mode_paiement').value;
+        const date = new Date();
+        const annee = date.getFullYear();
+        const mois = String(date.getMonth() + 1).padStart(2, '0');
+        const jour = String(date.getDate()).padStart(2, '0');
+        const heure = String(date.getHours()).padStart(2, '0');
+        const minute = String(date.getMinutes()).padStart(2, '0');
+        const seconde = String(date.getSeconds()).padStart(2, '0');
+        
+        let reference = '';
+        let hint = '';
+        
+        if (mode === 'Espèces') {
+            reference = `ESP-${annee}${mois}${jour}-${heure}${minute}${seconde}`;
+            hint = '💰 Paiement en espèces';
+        } else if (mode === 'Carte') {
+            reference = `CB-${annee}${mois}${jour}-${Math.floor(Math.random() * 10000)}`;
+            hint = '💳 Paiement par carte bancaire';
+        } else if (mode === 'Mobile Money') {
+            reference = `MM-${annee}${mois}${jour}-${Math.floor(Math.random() * 100000)}`;
+            hint = '📱 Paiement par Mobile Money';
+        } else if (mode === 'Virement') {
+            reference = `VIR-${annee}${mois}${jour}-${Math.floor(Math.random() * 10000)}`;
+            hint = '🏦 Paiement par virement';
+        } else {
+            reference = `FACT-${annee}${mois}${jour}-${Math.floor(Math.random() * 1000)}`;
+            hint = '🔄 Référence générée automatiquement';
+        }
+        
+        document.getElementById('reference_paiement').value = reference;
+        document.getElementById('referenceHint').innerHTML = hint;
+    }
+    
+    // Empêcher le montant payé de dépasser le montant total
+    function verifierMontantPaye() {
         let total = parseFloat(document.getElementById('montant_total').value) || 0;
-        let paye = parseFloat(this.value) || 0;
-        if(paye > total) {
-            this.value = total;
+        let paye = parseFloat(document.getElementById('montant_paye').value) || 0;
+        
+        if (paye > total) {
+            document.getElementById('montant_paye').value = total;
             alert('Le montant payé ne peut pas dépasser le montant total !');
         }
-    });
+    }
+    
+    // Écouter les événements
+    document.getElementById('mode_paiement').addEventListener('change', genererReference);
+    document.getElementById('montant_paye').addEventListener('input', verifierMontantPaye);
+    document.getElementById('montant_total').addEventListener('input', verifierMontantPaye);
+    
+    // Générer une référence au chargement de la page
+    genererReference();
 </script>
 
 @endsection
