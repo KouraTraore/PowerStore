@@ -9,22 +9,24 @@
   <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon_io/favicon-32x32.png') }}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon_io/favicon-16x16.png') }}">
   <link rel="manifest" href="{{ asset('images/favicon_io/site.webmanifest') }}">
-  
+
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Tabler Icons -->
   <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- ApexCharts -->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <!-- Custom CSS -->
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-  
+
   @stack('styles')
 </head>
 
 <body>
   <div id="overlay" class="overlay"></div>
-  
+
   <!-- TOPBAR -->
   <nav id="topbar" class="navbar bg-white border-bottom fixed-top topbar px-3">
     <button id="toggleBtn" class="d-none d-lg-inline-flex btn btn-light btn-icon btn-sm">
@@ -35,7 +37,7 @@
     <button id="mobileBtn" class="btn btn-light btn-icon btn-sm d-lg-none me-2">
       <i class="ti ti-layout-sidebar-left-expand"></i>
     </button>
-    
+
     <div>
       <ul class="list-unstyled d-flex align-items-center mb-0 gap-1">
         <!-- Bell icon -->
@@ -92,7 +94,7 @@
             </ul>
           </div>
         </li>
-        
+
         <!-- Dropdown -->
         <li class="ms-3 dropdown">
           <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -137,7 +139,11 @@
           <i class="ti ti-home"></i><span class="nav-text">Dashboard</span>
         </a>
       </li>
-      
+      <li>
+    <a class="nav-link {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}" href="{{ route('admin.clients.index') }}">
+        <i class="ti ti-users"></i><span class="nav-text">Clients</span>
+    </a>
+</li>
       <li>
         <a class="nav-link {{ request()->routeIs('admin.category') ? 'active' : '' }}" href="{{ route('admin.category') }}">
           <i class="ti ti-box-seam"></i><span class="nav-text">Categories</span>
@@ -173,7 +179,7 @@
   <main id="content" class="content py-10">
     <div class="container-fluid">
       @yield('content')
-      
+
       <div class="row">
         <div class="col-12">
           <footer class="text-center py-2 mt-6 text-secondary">
@@ -187,7 +193,7 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ asset('js/main.js') }}" type="module"></script>
-  
+
   @stack('scripts')
 </body>
 
