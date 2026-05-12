@@ -193,3 +193,4 @@ public function index(Request $request)
             ->with('success', 'Client supprimé avec succès.');
     }
 }
+

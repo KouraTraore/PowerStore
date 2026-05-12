@@ -144,31 +144,31 @@
         <i class="ti ti-users"></i><span class="nav-text">Clients</span>
     </a>
 </li>
+
       <li>
         <a class="nav-link {{ request()->routeIs('admin.category') ? 'active' : '' }}" href="{{ route('admin.category') }}">
           <i class="ti ti-box-seam"></i><span class="nav-text">Categories</span>
         </a>
       </li>
       <li>
-        <a class="nav-link {{ request()->routeIs('admin.product') ? 'active' : '' }}" href="{{ route('admin.product') }}">
-          <i class="ti ti-plus"></i><span class="nav-text">Add Product</span>
+        <a class="nav-link {{ request()->routeIs('admin.produits') ? 'active' : '' }}" href="{{ route('admin.produits') }}">
+          <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
         </a>
       </li>
       <li>
-        <a class="nav-link" href="{{ route('admin.reports') }}">
-          <i class="ti ti-receipt"></i><span class="nav-text">Reports</span>
+        <a class="nav-link {{ request()->routeIs('admin.commandes') ? 'active' : '' }}" href="{{ route('admin.commandes') }}">
+          <i class="ti ti-alert-circle"></i><span class="nav-text">Commandes</span>
         </a>
       </li>
+
+      <!-- ✅ LIGNE CORRIGÉE ICI ✅ -->
       <li>
-        <a class="nav-link" href="{{ route('admin.errors') }}">
-          <i class="ti ti-alert-circle"></i><span class="nav-text">404 Error</span>
+        <a class="nav-link {{ request()->routeIs('admin.factures.*') ? 'active' : '' }}" href="{{ route('admin.factures.index') }}">
+          <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
         </a>
       </li>
-      <li>
-        <a class="nav-link" href="{{ route('admin.docs') }}">
-          <i class="ti ti-file-text"></i><span class="nav-text">Docs</span>
-        </a>
-      </li>
+      <!-- FIN DE LA CORRECTION -->
+
       <li class="px-4 pt-4 pb-2"><small class="nav-text">Account</small></li>
       <li><a class="nav-link" href=""><i class="ti ti-logout"></i><span class="nav-text">Log in</span></a></li>
       <li><a class="nav-link" href=""><i class="ti ti-user-plus"></i><span class="nav-text">Sign up</span></a></li>
