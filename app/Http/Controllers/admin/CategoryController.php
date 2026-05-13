@@ -55,7 +55,7 @@ class CategoryController extends Controller
             ]);
         }
 
-        return view('admin.category', [
+        return view('admin.categories.index', [
             'categories' => $categories,
             'search' => $search,
             'status' => $status,

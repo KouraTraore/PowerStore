@@ -11,7 +11,7 @@
         <p class="mb-0">Gérez vos catégories de produits de manière efficace</p>
       </div>
       <div>
-        <button type="button" class="btn btn-primary" onclick="openAddCategoryModal()">
+        <button type="button" class="btn btn-primary" onclick="openCreateCategoryModal()">
           <i class="ti ti-plus me-2"></i>Ajouter une catégorie
         </button>
       </div>
@@ -82,7 +82,7 @@
       </div>
       <h4 class="text-muted">Aucune catégorie trouvée</h4>
       <p class="text-muted mb-4">Commencez par créer votre première catégorie</p>
-      <button type="button" class="btn btn-primary" onclick="openAddCategoryModal()">
+      <button type="button" class="btn btn-primary" onclick="openCreateCategoryModal()">
         <i class="ti ti-plus me-2"></i>Créer une catégorie
       </button>
     </div>
@@ -100,111 +100,9 @@
   </div>
 </div>
 
-{{-- Add/Edit Category Modal --}}
-<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addCategoryModalLabel">Ajouter une catégorie</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form id="categoryForm" enctype="multipart/form-data">
-        @csrf
-        <input type="hidden" id="categoryId" name="category_id">
-        <div class="modal-body">
-          <div class="row g-3">
-            <div class="col-12">
-              <label for="nomcat" class="form-label">Nom de la catégorie <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="nomcat" name="nomcat" placeholder="Ex: Électronique" required>
-              <div class="invalid-feedback" id="nomcatError"></div>
-            </div>
-
-            <div class="col-12">
-              <label for="description" class="form-label">Description de la catégorie</label>
-              <textarea class="form-control" id="description" name="description" rows="3" placeholder="Décrivez cette catégorie"></textarea>
-              <div class="invalid-feedback" id="descriptionError"></div>
-            </div>
-
-            <div class="col-12">
-              <label for="image_url" class="form-label">URL de l'image</label>
-              <input type="url" class="form-control" id="image_url" name="image_url" placeholder="https://example.com/image.jpg">
-              <div class="form-text">Entrez l'URL directe de l'image (JPEG, PNG, GIF, WebP). Exemple : https://example.com/image.jpg</div>
-              <div class="invalid-feedback" id="imageUrlError"></div>
-            </div>
-
-            <div class="col-12">
-              <label for="image" class="form-label">Image de la catégorie</label>
-              <input type="file" class="form-control" id="image" name="image" accept="image/*">
-              <div class="form-text">Formats acceptés: JPEG, PNG, JPG, GIF, WebP. Taille max: 2MB</div>
-              <div class="invalid-feedback" id="imageError"></div>
-              <div id="imagePreview" class="mt-2" style="display: none;">
-                <img id="previewImg" src="" alt="Preview" class="img-thumbnail" style="max-height: 150px;">
-                <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="removeImage()">Supprimer l'image</button>
-              </div>
-            </div>
-
-            <div class="col-12">
-              <label for="status" class="form-label">Statut <span class="text-danger">*</span></label>
-              <select class="form-select" id="status" name="status" required>
-                <option value="">Sélectionnez un statut</option>
-                <option value="pending" selected>En attente</option>
-                <option value="approved">Approuvée</option>
-                <option value="rejected">Rejetée</option>
-              </select>
-              <div class="invalid-feedback" id="statusError"></div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-          <button type="submit" class="btn btn-primary" id="submitBtn">
-            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" style="display: none;"></span>
-            Enregistrer
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-{{-- Details Modal --}}
-<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="detailsModalLabel">Détails de la catégorie</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="text-center mb-4">
-          <img id="detailsImage" src="" alt="" class="img-fluid rounded" style="max-height: 200px;">
-        </div>
-        <div class="row g-3">
-          <div class="col-12">
-            <h4 id="detailsName"></h4>
-            <span id="detailsBadge" class="badge"></span>
-          </div>
-          <div class="col-12">
-            <h6>Description</h6>
-            <p id="detailsDescription" class="text-muted"></p>
-          </div>
-          <div class="col-12" id="detailsReasonContainer" style="display: none;">
-            <h6>Raison de rejet</h6>
-            <p id="detailsReason" class="text-muted"></p>
-          </div>
-          <div class="col-md-6">
-            <h6>Approuvé le</h6>
-            <p id="detailsApprovedAt" class="text-muted"></p>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-        <button type="button" class="btn btn-primary" onclick="editCategoryFromDetails()">Modifier</button>
-      </div>
-    </div>
-  </div>
-</div>
+@include('admin.categories.create')
+@include('admin.categories.edit')
+@include('admin.categories.show')
 
 {{-- Delete Confirmation Modal --}}
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -244,30 +142,65 @@ let currentSearch = '';
 let categoryToDelete = null;
 let categoryToEdit = null;
 
-function resetCategoryForm() {
-    $('#categoryForm')[0].reset();
-    $('#categoryId').val('');
-    categoryToEdit = null;
-    $('#nomcat').removeClass('is-invalid');
-    $('#nomcatError').text('');
-    $('#description').removeClass('is-invalid');
-    $('#descriptionError').text('');
-    $('#image_url').removeClass('is-invalid');
-    $('#imageUrlError').text('');
-    $('#status').removeClass('is-invalid');
-    $('#statusError').text('');
-    $('#status').val('pending');
-    $('#image').val('');
-    $('#imageError').text('');
-    $('#image_url').val('');
-    $('#imagePreview').hide();
-    $('#addCategoryModalLabel').text('Ajouter une catégorie');
+function resetCreateForm() {
+    $('#createCategoryForm')[0].reset();
+    $('#create_nomcat').removeClass('is-invalid');
+    $('#create_nomcatError').text('');
+    $('#create_description').removeClass('is-invalid');
+    $('#create_descriptionError').text('');
+    $('#create_image_url').removeClass('is-invalid');
+    $('#create_imageUrlError').text('');
+    $('#create_status').removeClass('is-invalid');
+    $('#create_statusError').text('');
+    $('#create_status').val('pending');
+    $('#create_image').val('');
+    $('#create_imageError').text('');
+    $('#create_image_url').val('');
+    $('#create_imagePreview').hide();
 }
 
-function openAddCategoryModal() {
-    resetCategoryForm();
-    const modal = new bootstrap.Modal(document.getElementById('addCategoryModal'));
+function resetEditForm() {
+    $('#editCategoryForm')[0].reset();
+    $('#editCategoryId').val('');
+    $('#edit_nomcat').removeClass('is-invalid');
+    $('#edit_nomcatError').text('');
+    $('#edit_description').removeClass('is-invalid');
+    $('#edit_descriptionError').text('');
+    $('#edit_image_url').removeClass('is-invalid');
+    $('#edit_imageUrlError').text('');
+    $('#edit_status').removeClass('is-invalid');
+    $('#edit_statusError').text('');
+    $('#edit_image').val('');
+    $('#edit_imageError').text('');
+    $('#edit_imagePreview').hide();
+}
+
+function openCreateCategoryModal() {
+    resetCreateForm();
+    const modal = new bootstrap.Modal(document.getElementById('createCategoryModal'));
     modal.show();
+}
+
+function getInputPrefix(inputId) {
+    return inputId.startsWith('edit_') ? 'edit' : 'create';
+}
+
+function normalizeImageUrl(url) {
+    if (!url) {
+        return '';
+    }
+
+    url = url.trim();
+
+    if (url.match(/^https?:\/\//i)) {
+        return url;
+    }
+
+    if (url.match(/^\/\//)) {
+        return window.location.protocol + url;
+    }
+
+    return 'https://' + url.replace(/^\/\//, '');
 }
 
 $(document).ready(function() {
@@ -290,43 +223,41 @@ $(document).ready(function() {
     });
 
     // Form submission
-    $('#categoryForm').on('submit', function(e) {
+    $('#createCategoryForm').on('submit', function(e) {
         e.preventDefault();
-        submitForm();
+        submitForm('create');
     });
 
-    // Reset form when modal closes
-    $('#addCategoryModal').on('hidden.bs.modal', function () {
-        resetCategoryForm();
+    $('#editCategoryForm').on('submit', function(e) {
+        e.preventDefault();
+        submitForm('edit');
     });
 
-    // Image preview
-    $('#image').on('change', function() {
+    // Reset form when modals close
+    $('#createCategoryModal').on('hidden.bs.modal', function () {
+        resetCreateForm();
+    });
+
+    $('#editCategoryModal').on('hidden.bs.modal', function () {
+        resetEditForm();
+    });
+
+    $('#create_image').on('change', function() {
         handleImagePreview(this);
     });
 
-    $('#image_url').on('input', function() {
-        handleImageUrlPreview(this.value);
+    $('#create_image_url').on('input', function() {
+        handleImageUrlPreview(this);
+    });
+
+    $('#edit_image').on('change', function() {
+        handleImagePreview(this);
+    });
+
+    $('#edit_image_url').on('input', function() {
+        handleImageUrlPreview(this);
     });
 });
-
-function normalizeImageUrl(url) {
-    if (!url) {
-        return '';
-    }
-
-    url = url.trim();
-
-    if (url.match(/^https?:\/\//i)) {
-        return url;
-    }
-
-    if (url.match(/^\/\//)) {
-        return window.location.protocol + url;
-    }
-
-    return 'https://' + url.replace(/^\/\//, '');
-}
 
 function loadCategories() {
     $('#loadingSkeleton').show();
@@ -412,11 +343,9 @@ function renderPagination(pagination) {
 
     if (pagination.last_page <= 1) return;
 
-    // Previous button
     const prevDisabled = pagination.current_page === 1 ? 'disabled' : '';
     container.append(`<li class="page-item ${prevDisabled}"><a class="page-link" href="#" onclick="changePage(${pagination.current_page - 1}); return false;">Précédent</a></li>`);
 
-    // Page numbers
     const start = Math.max(1, pagination.current_page - 2);
     const end = Math.min(pagination.last_page, pagination.current_page + 2);
 
@@ -439,7 +368,6 @@ function renderPagination(pagination) {
         container.append(`<li class="page-item"><a class="page-link" href="#" onclick="changePage(${pagination.last_page}); return false;">${pagination.last_page}</a></li>`);
     }
 
-    // Next button
     const nextDisabled = pagination.current_page === pagination.last_page ? 'disabled' : '';
     container.append(`<li class="page-item ${nextDisabled}"><a class="page-link" href="#" onclick="changePage(${pagination.current_page + 1}); return false;">Suivant</a></li>`);
 }
@@ -488,23 +416,23 @@ function editCategory(id) {
         url: `/admin/category/${id}`,
         method: 'GET',
         success: function(category) {
-            $('#addCategoryModalLabel').text('Modifier la catégorie');
-                    $('#categoryId').val(category.id);
-            $('#nomcat').val(category.nomcat);
-            $('#description').val(category.description || '');
-            $('#status').val(category.status);
-            $('#image_url').val(category.image && category.image.match(/^https?:\/\//i) ? category.image : '');
-            $('#image').val('');
+            resetEditForm();
+            $('#editCategoryId').val(category.id);
+            $('#edit_nomcat').val(category.nomcat);
+            $('#edit_description').val(category.description || '');
+            $('#edit_status').val(category.status);
+            $('#edit_image_url').val(category.image && category.image.match(/^https?:\/\//i) ? category.image : '');
+            $('#edit_image').val('');
 
             if (category.image) {
                 const previewUrl = getValidImageUrl(category.image);
-                $('#previewImg').attr('src', previewUrl);
-                $('#imagePreview').show();
+                $('#edit_previewImg').attr('src', previewUrl);
+                $('#edit_imagePreview').show();
             } else {
-                $('#imagePreview').hide();
+                $('#edit_imagePreview').hide();
             }
 
-            const modal = new bootstrap.Modal(document.getElementById('addCategoryModal'));
+            const modal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
             modal.show();
         },
         error: function() {
@@ -528,10 +456,9 @@ function viewDetails(id) {
             $('#detailsName').text(category.nomcat);
             $('#detailsBadge').html(getStatusBadge(category.status));
             $('#detailsImage').attr('src', getValidImageUrl(category.image));
-
             $('#detailsDescription').text(category.description || 'Pas de description disponible');
 
-                if (category.rejection_reason && category.status === 'rejected') {
+            if (category.rejection_reason && category.status === 'rejected') {
                 $('#detailsReason').text(category.rejection_reason);
                 $('#detailsReasonContainer').show();
             } else {
@@ -539,7 +466,6 @@ function viewDetails(id) {
             }
 
             $('#detailsApprovedAt').text(category.approved_at ? formatDate(category.approved_at) : 'Aucune date');
-
             categoryToEdit = category.id;
 
             const modal = new bootstrap.Modal(document.getElementById('detailsModal'));
@@ -585,27 +511,28 @@ function confirmDelete() {
     });
 }
 
-function submitForm() {
-    const imageUrlInput = $('#image_url');
+function submitForm(type) {
+    const prefix = type === 'edit' ? 'edit' : 'create';
+    const form = $(`#${prefix}CategoryForm`);
+    const imageUrlInput = $(`#${prefix}_image_url`);
     const normalizedUrl = normalizeImageUrl(imageUrlInput.val());
     imageUrlInput.val(normalizedUrl);
 
-    const formData = new FormData($('#categoryForm')[0]);
-    const isEdit = $('#categoryId').val();
+    const formData = new FormData(form[0]);
+    const isEdit = type === 'edit' && $(`#${prefix}CategoryId`).val();
 
     if (isEdit) {
         formData.append('_method', 'PUT');
     }
 
-    $('#submitBtn').prop('disabled', true);
-    $('#submitBtn .spinner-border').show();
+    $(`#${prefix}SubmitBtn`).prop('disabled', true);
+    $(`#${prefix}SubmitBtn .spinner-border`).show();
 
-    // Clear previous errors
     $('.invalid-feedback').text('');
     $('.form-control, .form-select').removeClass('is-invalid');
 
     $.ajax({
-        url: isEdit ? `/admin/category/${$('#categoryId').val()}` : '{{ route("admin.category.store") }}',
+        url: isEdit ? `/admin/category/${$(`#${prefix}CategoryId`).val()}` : '{{ route("admin.category.store") }}',
         method: 'POST',
         data: formData,
         processData: false,
@@ -614,29 +541,27 @@ function submitForm() {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response) {
-            $('#submitBtn').prop('disabled', false);
-            $('#submitBtn .spinner-border').hide();
-            bootstrap.Modal.getInstance(document.getElementById('addCategoryModal')).hide();
+            $(`#${prefix}SubmitBtn`).prop('disabled', false);
+            $(`#${prefix}SubmitBtn .spinner-border`).hide();
+            bootstrap.Modal.getInstance(document.getElementById(`${prefix}CategoryModal`)).hide();
             showToast(response.message, 'success');
-            
-            // Reset form
-            $('#categoryForm')[0].reset();
-            $('#categoryId').val('');
-            $('#addCategoryModalLabel').text('Ajouter une catégorie');
-            $('#imagePreview').hide();
-            
+            if (type === 'create') {
+                resetCreateForm();
+            } else {
+                resetEditForm();
+            }
             loadCategories();
         },
         error: function(xhr) {
-            $('#submitBtn').prop('disabled', false);
-            $('#submitBtn .spinner-border').hide();
+            $(`#${prefix}SubmitBtn`).prop('disabled', false);
+            $(`#${prefix}SubmitBtn .spinner-border`).hide();
             if (xhr.status === 422) {
                 const errors = xhr.responseJSON.errors;
                 Object.keys(errors).forEach(field => {
-                    const elementId = field === 'nomcat' ? 'nomcat' : field;
-                    const errorId = field === 'nomcat' ? 'nomcatError' : `${field}Error`;
+                    const fieldId = field === 'nomcat' ? `${prefix}_nomcat` : `${prefix}_${field}`;
+                    const errorId = field === 'image_url' ? `${prefix}_imageUrlError` : `${fieldId}Error`;
                     $(`#${errorId}`).text(errors[field][0]);
-                    $(`#${elementId}`).addClass('is-invalid');
+                    $(`#${fieldId}`).addClass('is-invalid');
                 });
             } else {
                 showToast('Erreur lors de l\'enregistrement', 'error');
@@ -646,33 +571,34 @@ function submitForm() {
 }
 
 function handleImagePreview(input) {
+    const prefix = getInputPrefix(input.id);
     if (input.files && input.files[0]) {
-        $('#image_url').val('');
+        $(`#${prefix}_image_url`).val('');
         const reader = new FileReader();
         reader.onload = function(e) {
-            $('#previewImg').attr('src', e.target.result);
-            $('#imagePreview').show();
+            $(`#${prefix}_previewImg`).attr('src', e.target.result);
+            $(`#${prefix}_imagePreview`).show();
         };
         reader.readAsDataURL(input.files[0]);
     }
 }
 
-function handleImageUrlPreview(url) {
-    const normalizedUrl = normalizeImageUrl(url);
-
+function handleImageUrlPreview(input) {
+    const prefix = getInputPrefix(input.id);
+    const normalizedUrl = normalizeImageUrl(input.value);
     if (normalizedUrl && normalizedUrl.match(/^https?:\/\//i)) {
-        $('#image').val('');
-        $('#previewImg').attr('src', normalizedUrl);
-        $('#imagePreview').show();
-        $('#image_url').val(normalizedUrl);
-    } else if (!url) {
-        $('#imagePreview').hide();
+        $(`#${prefix}_image`).val('');
+        $(`#${prefix}_previewImg`).attr('src', normalizedUrl);
+        $(`#${prefix}_imagePreview`).show();
+        $(`#${prefix}_image_url`).val(normalizedUrl);
+    } else if (!input.value) {
+        $(`#${prefix}_imagePreview`).hide();
     }
 }
 
-function removeImage() {
-    $('#image').val('');
-    $('#imagePreview').hide();
+function removeImage(prefix) {
+    $(`#${prefix}_image`).val('');
+    $(`#${prefix}_imagePreview`).hide();
 }
 
 function showToast(message, type = 'success') {
