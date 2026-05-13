@@ -11,9 +11,23 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/admin/dashboard', [dashdordController::class, 'index'])->name('admin.index');
-Route::get('/admin/category', [CategoryController::class, 'index'])->name('admin.category');
-Route::get('/admin/product', [ProductController::class, 'index'])->name('admin.product');
-route::get('/admin/reports', [ReportController::class, 'index'])->name('admin.reports');
-route::get('/admin/docs', [DocsController::class, 'index'])->name('admin.docs');
-route::get('/admin/errors', [ErrorsController::class, 'index'])->name('admin.errors');
+
+// Admin routes
+Route::prefix('/admin')->group(function () {
+    Route::get('/dashboard', [dashdordController::class, 'index'])->name('admin.index');
+    
+    // Category routes
+    Route::get('/category', [CategoryController::class, 'index'])->name('admin.category');
+    Route::post('/category', [CategoryController::class, 'store'])->name('admin.category.store');
+    Route::get('/category/{category}', [CategoryController::class, 'show'])->name('admin.category.show');
+    Route::put('/category/{category}', [CategoryController::class, 'update'])->name('admin.category.update');
+    Route::delete('/category/{category}', [CategoryController::class, 'destroy'])->name('admin.category.destroy');
+    
+    // Product routes
+    Route::get('/product', [ProductController::class, 'index'])->name('admin.product');
+    
+    // Other routes
+    Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports');
+    Route::get('/docs', [DocsController::class, 'index'])->name('admin.docs');
+    Route::get('/errors', [ErrorsController::class, 'index'])->name('admin.errors');
+});
