@@ -155,7 +155,7 @@
         </a>
       </li>
       <li>
-<<<<<<< HEAD
+
         <a class="nav-link {{ request()->routeIs('admin.produits') ? 'active' : '' }}" href="{{ route('admin.produits') }}">
           <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
 

@@ -9,40 +9,19 @@ class Product extends Model
 {
     use HasFactory;
 
-<<<<<<< HEAD
-    // Le nom de la table dans la base de données
     protected $table = 'produits';
 
-    // Les champs qu'on peut remplir
+    protected $primaryKey = 'id';
+
+    public $timestamps = true;
+
     protected $fillable = [
         'nomp',
         'prix',
         'quantite',
         'description',
         'image',
-        'created_by',
-        'categorie_id'
-    ];
-
-    // Désactiver les timestamps si ta table n'a pas created_at/updated_at
-    public $timestamps = false;
-
-    // Relation avec la catégorie
-    public function categorie()
-=======
-    protected $table = 'produits';
-    
-    protected $primaryKey = 'id';
-    
-    public $timestamps = true;
-    
-    protected $fillable = [
-        'nomp', 
-        'prix', 
-        'quantite', 
-        'description', 
-        'image', 
-        'categorie_id', 
+        'categorie_id',
         'created_by'
     ];
 
@@ -53,38 +32,31 @@ class Product extends Model
         'created_by' => 'integer',
     ];
 
-    // Relation avec la catégorie (modèle de ton collègue)
+    // Relation avec la catégorie
     public function category()
->>>>>>> origin/mousstafa_features
     {
         return $this->belongsTo(Category::class, 'categorie_id');
     }
 
-<<<<<<< HEAD
-    // Relation avec l'utilisateur qui a créé le produit
-    public function createur()
-=======
     // Relation avec l'utilisateur
     public function creator()
->>>>>>> origin/mousstafa_features
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-<<<<<<< HEAD
-    // ✅ AJOUTE CETTE RELATION (pour lier aux détails de commande)
+    // Relation avec les détails de commande
     public function detailsCommande()
     {
         return $this->hasMany(DetailCommande::class, 'produit_id');
     }
-}
-=======
-    // Accesseurs
+
+    // Prix formaté
     public function getFormattedPriceAttribute()
     {
         return number_format($this->prix, 0, ',', ' ') . ' FCFA';
     }
 
+    // Badge stock
     public function getStockBadgeAttribute()
     {
         if ($this->quantite <= 0) {
@@ -92,18 +64,19 @@ class Product extends Model
         } elseif ($this->quantite < 5) {
             return '<span class="badge bg-warning text-dark">Stock faible (' . $this->quantite . ')</span>';
         }
+
         return '<span class="badge bg-success">Stock (' . $this->quantite . ')</span>';
     }
 
+    // Valeur totale
     public function getTotalValueAttribute()
     {
         return $this->prix * $this->quantite;
     }
 
-    // Scopes
+    // Scope stock faible
     public function scopeLowStock($query, $threshold = 5)
     {
         return $query->where('quantite', '<', $threshold);
     }
-} 
->>>>>>> origin/mousstafa_features
+}
