@@ -108,7 +108,7 @@
                 </div>
               </div>
               <div class="p-3 d-flex flex-column gap-1 small lh-lg">
-                <a href="{{ route('admin.index') }}">Home</a>
+                <a href="{{ route('admin.product.index') }}">Home</a>
                 <a href="#!">Inbox</a>
                 <a href="#!">Chat</a>
                 <a href="#!">Activity</a>
@@ -125,7 +125,7 @@
   <!-- SIDEBAR -->
   <aside id="sidebar" class="sidebar">
     <div class="logo-area">
-      <a href="{{ route('admin.index') }}" class="d-inline-flex">
+      <a href="{{ route('admin.product.index') }}" class="d-inline-flex">
         <img src="{{ asset('images/logo-icon.svg') }}" alt="" width="24">
         <span class="logo-text ms-2"><img src="{{ asset('images/logo.svg') }}" alt=""></span>
       </a>
@@ -144,7 +144,7 @@
         </a>
       </li>
       <li>
-        <a class="nav-link {{ request()->routeIs('admin.product') ? 'active' : '' }}" href="{{ route('admin.product') }}">
+        <a class="nav-link {{ request()->routeIs('admin.product.index') ? 'active' : '' }}" href="{{ route('admin.product.index') }}">
           <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
         </a>
       </li>
