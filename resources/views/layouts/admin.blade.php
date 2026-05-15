@@ -126,8 +126,8 @@
   <aside id="sidebar" class="sidebar">
     <div class="logo-area">
       <a href="{{ route('admin.index') }}" class="d-inline-flex">
-        <img src="{{ asset('images/logo-icon.svg') }}" alt="" width="24">
-        <span class="logo-text ms-2"><img src="{{ asset('images/logo.svg') }}" alt=""></span>
+        <img src="{{ asset('images/logo_site/logo.svg.png') }}" alt="" width="100%">
+        <span class="logo-text ms-2"><img src="{{ asset('images/') }}" alt=""></span>
       </a>
     </div>
     <ul class="nav flex-column">
