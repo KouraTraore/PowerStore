@@ -109,7 +109,7 @@
                 </div>
               </div>
               <div class="p-3 d-flex flex-column gap-1 small lh-lg">
-                <a href="{{ route('admin.index') }}">Home</a>
+                <a href="{{ route('admin.product.index') }}">Home</a>
                 <a href="#!">Inbox</a>
                 <a href="#!">Chat</a>
                 <a href="#!">Activity</a>
@@ -126,9 +126,15 @@
   <!-- SIDEBAR -->
   <aside id="sidebar" class="sidebar">
     <div class="logo-area">
+
       <a href="{{ route('admin.index') }}" class="d-inline-flex">
         <img src="{{ asset('images/logo_site/logo.svg.png') }}" alt="" width="100%">
         <span class="logo-text ms-2"><img src="{{ asset('images/') }}" alt=""></span>
+
+      <a href="{{ route('admin.product.index') }}" class="d-inline-flex">
+        <img src="{{ asset('images/logo-icon.svg') }}" alt="" width="24">
+        <span class="logo-text ms-2"><img src="{{ asset('images/logo.svg') }}" alt=""></span>
+
       </a>
     </div>
     <ul class="nav flex-column">
@@ -149,10 +155,10 @@
         </a>
       </li>
       <li>
+<<<<<<< HEAD
         <a class="nav-link {{ request()->routeIs('admin.produits') ? 'active' : '' }}" href="{{ route('admin.produits') }}">
-          <i class="ti ti-package"></i><span class="nav-text">Produits</span>
-        </a>
-      </li>
+          <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
+
       
       <!-- ✅ COMMANDES CORRIGÉE ✅ -->
       <li>
