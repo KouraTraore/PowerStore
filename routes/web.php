@@ -3,10 +3,11 @@
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\dashdordController;
 use App\Http\Controllers\admin\DocsController;
-use App\Http\Controllers\admin\ErrorsController;
+use App\Http\Controllers\admin\CommandeController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\admin\ClientController;
+use App\Http\Controllers\admin\PaiementController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,9 +18,13 @@ Route::get('/', function () {
 Route::get('/admin/dashboard', [dashdordController::class, 'index'])->name('admin.index');
 
 // Clients
-Route::get('/admin/clients', [ClientController::class, 'index'])->name('admin.clients');
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('clients', ClientController::class)->except(['edit', 'update']);
+    Route::get('clients/{client}/edit', [ClientController::class, 'edit'])->name('clients.edit');
+    Route::put('clients/{client}', [ClientController::class, 'update'])->name('clients.update');
+});
 
-// Categories
+// Catégories
 Route::get('/admin/category', [CategoryController::class, 'index'])->name('admin.category');
 
 // Produits
@@ -28,26 +33,35 @@ Route::get('/admin/produits', [ProductController::class, 'index'])->name('admin.
 // Docs
 Route::get('/admin/docs', [DocsController::class, 'index'])->name('admin.docs');
 
-// Commandes
-Route::get('/admin/commandes', [ErrorsController::class, 'index'])->name('admin.commandes');
-
-// ========== ROUTES FACTURES ==========
+// ========== ROUTES FACTURES (ReportController) ==========
 Route::prefix('admin')->name('admin.')->group(function () {
-    // Gestion des factures
     Route::get('/factures', [ReportController::class, 'index'])->name('factures.index');
     Route::get('/factures/create', [ReportController::class, 'create'])->name('factures.create');
     Route::post('/factures', [ReportController::class, 'store'])->name('factures.store');
+    Route::get('/factures/{id}', [ReportController::class, 'show'])->name('factures.show');
     Route::get('/factures/{id}/edit', [ReportController::class, 'edit'])->name('factures.edit');
     Route::put('/factures/{id}', [ReportController::class, 'update'])->name('factures.update');
     Route::get('/factures/{id}/delete', [ReportController::class, 'delete'])->name('factures.delete');
-    
-    // Export PDF
     Route::get('/factures/{id}/pdf', [ReportController::class, 'exportPdf'])->name('factures.pdf');
     Route::get('/factures/export/all', [ReportController::class, 'exportAllPdf'])->name('factures.export.all');
-    
-    // Email
     Route::get('/factures/{id}/email', [ReportController::class, 'sendEmail'])->name('factures.email');
-    
-    // Dashboard paiements
     Route::get('/paiements/dashboard', [ReportController::class, 'paiementsDashboard'])->name('paiements.dashboard');
+});
+
+// ========== ROUTES COMMANDES ==========
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('commandes', CommandeController::class)->except(['show']);
+    Route::get('commandes/{id}', [CommandeController::class, 'show'])->name('commandes.show');
+    Route::get('commandes/{id}/delete', [CommandeController::class, 'delete'])->name('commandes.delete');
+    Route::match(['get', 'put'], 'commandes/{id}/statut/{statut}', [CommandeController::class, 'changeStatut'])->name('commandes.changeStatut');
+    Route::get('commandes/{id}/choix-facture', [CommandeController::class, 'choixFactureLivraison'])->name('commandes.choix-facture');
+    Route::post('commandes/{id}/livrer-avec-facture', [CommandeController::class, 'livrerAvecFacture'])->name('commandes.livrer-avec-facture');
+    Route::get('commandes/{id}/print', [CommandeController::class, 'printView'])->name('commandes.print');
+});
+
+// ========== ROUTES PAIEMENTS ==========
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/paiements', [PaiementController::class, 'index'])->name('paiements.index');
+    Route::get('/paiements/create/{facture_id}', [PaiementController::class, 'create'])->name('paiements.create');
+    Route::post('/paiements/{facture_id}', [PaiementController::class, 'store'])->name('paiements.store');
 });

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>@yield('title', 'InApp Inventory Dashboard')</title>
+  <title>@yield('title', 'POWERSTOCK - Dashboard')</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon_io/apple-touch-icon.png') }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon_io/favicon-32x32.png') }}">
@@ -17,6 +17,7 @@
   <!-- ApexCharts -->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <!-- Custom CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   
   @stack('styles')
@@ -131,45 +132,50 @@
       </a>
     </div>
     <ul class="nav flex-column">
-      <li class="px-4 py-2"><small class="nav-text">Main</small></li>
+      <li class="px-4 py-2"><small class="nav-text">Principaux</small></li>
       <li>
         <a class="nav-link {{ request()->routeIs('admin.index') ? 'active' : '' }}" href="{{ route('admin.index') }}">
           <i class="ti ti-home"></i><span class="nav-text">Dashboard</span>
         </a>
       </li>
       <li>
-        <a class="nav-link {{ request()->routeIs('admin.clients') ? 'active' : '' }}" href="{{ route('admin.clients') }}">
+        <a class="nav-link {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}" href="{{ route('admin.clients.index') }}">
           <i class="ti ti-users"></i><span class="nav-text">Clients</span>
         </a>
       </li>
-      
       <li>
         <a class="nav-link {{ request()->routeIs('admin.category') ? 'active' : '' }}" href="{{ route('admin.category') }}">
-          <i class="ti ti-box-seam"></i><span class="nav-text">Categories</span>
+          <i class="ti ti-box-seam"></i><span class="nav-text">Catégories</span>
         </a>
       </li>
       <li>
         <a class="nav-link {{ request()->routeIs('admin.produits') ? 'active' : '' }}" href="{{ route('admin.produits') }}">
-          <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
-        </a>
-      </li>
-      <li>
-        <a class="nav-link {{ request()->routeIs('admin.commandes') ? 'active' : '' }}" href="{{ route('admin.commandes') }}">
-          <i class="ti ti-alert-circle"></i><span class="nav-text">Commandes</span>
+          <i class="ti ti-package"></i><span class="nav-text">Produits</span>
         </a>
       </li>
       
-      <!-- ✅ LIGNE CORRIGÉE ICI ✅ -->
+      <!-- ✅ COMMANDES CORRIGÉE ✅ -->
+      <li>
+        <a class="nav-link {{ request()->routeIs('admin.commandes.*') ? 'active' : '' }}" href="{{ route('admin.commandes.index') }}">
+          <i class="ti ti-shopping-cart"></i><span class="nav-text">Commandes</span>
+        </a>
+      </li>
+      
+      <!-- ✅ FACTURES CORRIGÉE ✅ -->
       <li>
         <a class="nav-link {{ request()->routeIs('admin.factures.*') ? 'active' : '' }}" href="{{ route('admin.factures.index') }}">
           <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
         </a>
       </li>
-      <!-- FIN DE LA CORRECTION -->
+      
+      <li>
+        <a class="nav-link {{ request()->routeIs('admin.paiements.dashboard') ? 'active' : '' }}" href="{{ route('admin.paiements.dashboard') }}">
+          <i class="ti ti-chart-pie"></i><span class="nav-text">Paiements</span>
+        </a>
+      </li>
     
-      <li class="px-4 pt-4 pb-2"><small class="nav-text">Account</small></li>
-      <li><a class="nav-link" href=""><i class="ti ti-logout"></i><span class="nav-text">Log in</span></a></li>
-      <li><a class="nav-link" href=""><i class="ti ti-user-plus"></i><span class="nav-text">Sign up</span></a></li>
+      <li class="px-4 pt-4 pb-2"><small class="nav-text">Compte</small></li>
+      <li><a class="nav-link" href=""><i class="ti ti-logout"></i><span class="nav-text">Déconnexion</span></a></li>
     </ul>
   </aside>
 
@@ -181,7 +187,7 @@
       <div class="row">
         <div class="col-12">
           <footer class="text-center py-2 mt-6 text-secondary">
-            <p class="mb-0">Copyright © 2026 InApp Inventory Dashboard. Developed by <a href="https://codescandy.com/" target="_blank" class="text-primary">CodesCandy</a> • Distributed by <a href="https://themewagon.com/" target="_blank" class="text-primary">ThemeWagon</a></p>
+            <p class="mb-0">Copyright © 2026 POWERSTOCK. Developed by <a href="https://codescandy.com/" target="_blank" class="text-primary">CodesCandy</a> • Distributed by <a href="https://themewagon.com/" target="_blank" class="text-primary">ThemeWagon</a></p>
           </footer>
         </div>
       </div>

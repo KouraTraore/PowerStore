@@ -2,12 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
-    use HasFactory;
+    public $timestamps = false;
 
-    protected $table = 'clients';
+    protected $fillable = ['nomc', 'prenom', 'tel', 'email', 'adresse'];
+
+    public function scopeSearch(\Illuminate\Database\Eloquent\Builder $query, string $search)
+    {
+        return $query->where(function ($q) use ($search) {
+            $q->where('prenom', 'like', "%{$search}%")
+              ->orWhere('nomc', 'like', "%{$search}%")
+              ->orWhere('tel', 'like', "%{$search}%")
+              ->orWhere('email', 'like', "%{$search}%");
+        });
+    }
+
+    // ✅ AJOUTE CETTE RELATION
+    public function commandes()
+    {
+        return $this->hasMany(Commande::class);
+    }
 }
