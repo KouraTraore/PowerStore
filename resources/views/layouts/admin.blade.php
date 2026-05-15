@@ -168,11 +168,7 @@
         </a>
       </li>
       
-      <li>
-        <a class="nav-link {{ request()->routeIs('admin.paiements.dashboard') ? 'active' : '' }}" href="{{ route('admin.paiements.dashboard') }}">
-          <i class="ti ti-chart-pie"></i><span class="nav-text">Paiements</span>
-        </a>
-      </li>
+   
     
       <li class="px-4 pt-4 pb-2"><small class="nav-text">Compte</small></li>
       <li><a class="nav-link" href=""><i class="ti ti-logout"></i><span class="nav-text">Déconnexion</span></a></li>

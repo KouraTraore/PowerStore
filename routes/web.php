@@ -65,3 +65,23 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/paiements/create/{facture_id}', [PaiementController::class, 'create'])->name('paiements.create');
     Route::post('/paiements/{facture_id}', [PaiementController::class, 'store'])->name('paiements.store');
 });
+// Admin routes
+Route::prefix('/admin')->group(function () {
+    Route::get('/dashboard', [dashdordController::class, 'index'])->name('admin.index');
+    
+    // Category routes
+    Route::get('/category', [CategoryController::class, 'index'])->name('admin.category');
+    Route::post('/category', [CategoryController::class, 'store'])->name('admin.category.store');
+    Route::get('/category/{category}', [CategoryController::class, 'show'])->name('admin.category.show');
+    Route::put('/category/{category}', [CategoryController::class, 'update'])->name('admin.category.update');
+    Route::delete('/category/{category}', [CategoryController::class, 'destroy'])->name('admin.category.destroy');
+    
+    // Product routes
+    Route::get('/product', [ProductController::class, 'index'])->name('admin.product');
+    
+    // Other routes
+    Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports');
+    Route::get('/docs', [DocsController::class, 'index'])->name('admin.docs');
+    Route::get('/errors', [ErrorsController::class, 'index'])->name('admin.errors');
+
+});
