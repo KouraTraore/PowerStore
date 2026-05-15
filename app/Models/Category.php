@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-<<<<<<< HEAD
+
 
     public $timestamps = false;
 
@@ -104,7 +104,7 @@ class Category extends Model
         }
         return $query;
     }
-=======
+
     //
->>>>>>> origin/mousstafa_features
+
 }
