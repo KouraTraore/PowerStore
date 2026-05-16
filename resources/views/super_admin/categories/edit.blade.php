@@ -1,0 +1,159 @@
+@extends('layouts.super_admin')
+
+@section('title', 'Modifier ' . $category->nomcat)
+@section('page-title', 'Modifier la catégorie')
+@section('breadcrumb', 'Super Admin › Catégories › Modifier')
+
+@push('styles')
+<style>
+    .btn-back {
+        width: 34px; height: 34px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        color: var(--text-secondary); text-decoration: none;
+    }
+    .btn-back i { font-size: 17px; }
+    .badge-status {
+        font-size: 11px; padding: 3px 10px; border-radius: 20px;
+        font-weight: 600; background: var(--bg); color: var(--color);
+    }
+    .btn-cancel {
+        border: 1px solid var(--border-color);
+        background: var(--bg-card);
+        color: var(--text-secondary);
+        padding: 8px 18px; border-radius: 8px;
+        font-size: 13px; text-decoration: none;
+    }
+    .btn-cancel:hover {
+        background: var(--bg-hover);
+    }
+    .btn-save {
+        padding: 8px 18px; border-radius: 8px; font-size: 13px;
+    }
+
+    /* Bootstrap overrides pour thème sombre */
+    .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+    .card-header {
+        background: var(--bg-card);
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+    .form-label { color: var(--text-primary); }
+    .form-control, .form-select {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+    }
+    .form-control:focus, .form-select:focus {
+        background: var(--bg-card);
+        border-color: var(--accent);
+        color: var(--text-primary);
+    }
+    .input-group-text {
+        background: var(--bg-hover);
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+    }
+    .invalid-feedback { color: #ef4444; }
+    .form-check-label { color: var(--text-primary); }
+</style>
+@endpush
+
+@section('content')
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <a href="{{ route('admin.super.categories.index') }}" class="btn-back">
+                <i class="ti ti-arrow-left"></i>
+            </a>
+            <div>
+                <h1 style="font-size:18px;font-weight:700;color:var(--text-primary);margin:0">{{ $category->nomcat }}</h1>
+                <p style="font-size:13px;color:var(--text-muted);margin:0">Modifier le nom ou l'image</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span><i class="ti ti-edit me-2" style="color:#D97706"></i>Modifier</span>
+                @php
+                    $statusColors = [
+                        'approved' => ['bg' => '#F0FDF4', 'color' => '#166534'],
+                        'pending'  => ['bg' => '#FEF3C7', 'color' => '#92400E'],
+                        'rejected' => ['bg' => '#FEF2F2', 'color' => '#991B1B'],
+                    ];
+                    $current = $statusColors[$category->status] ?? ['bg' => '#F2F4F7', 'color' => '#8a8fa8'];
+                @endphp
+                <span class="badge-status" style="--bg: {{ $current['bg'] }}; --color: {{ $current['color'] }}">
+                    {{ $category->status }}
+                </span>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ route('admin.super.categories.update', $category) }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size:13px;font-weight:600;">
+                            Nom de la catégorie <span style="color:#ef4444">*</span>
+                        </label>
+                        <input type="text" name="nomcat" class="form-control @error('nomcat') is-invalid @enderror"
+                               value="{{ old('nomcat', $category->nomcat) }}" required>
+                        @error('nomcat') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size:13px;font-weight:600;">Image</label>
+                        @if($category->image)
+                            <div style="margin-bottom:8px">
+                                <img src="{{ asset($category->image) }}" style="width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--border-color)">
+                                <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Image actuelle</div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" name="delete_image" value="1" id="delete_image">
+                                    <label class="form-check-label text-danger" for="delete_image" style="font-size:12px">
+                                        Supprimer cette image
+                                    </label>
+                                </div>
+                            </div>
+                        @endif
+                        <input type="file" name="image" accept="image/*"
+                               class="form-control @error('image') is-invalid @enderror"
+                               onchange="previewImage(this)">
+                        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Laisser vide pour garder l'image actuelle</div>
+                        @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        <div id="img-preview" style="display:none;margin-top:10px">
+                            <img id="preview-img" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:1px solid var(--border-color)">
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 justify-content-end">
+                        <a href="{{ route('admin.super.categories.index') }}" class="btn-cancel">Annuler</a>
+                        <button type="submit" class="btn btn-accent btn-save">
+                            <i class="ti ti-device-floppy me-1"></i> Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('preview-img').src = e.target.result;
+            document.getElementById('img-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+@endpush

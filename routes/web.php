@@ -7,21 +7,68 @@ use App\Http\Controllers\admin\ErrorsController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ClientController;
 use App\Http\Controllers\admin\ReportController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\super_admin\DashboardController;
+use App\Http\Controllers\super_admin\UserController;
+use App\Http\Controllers\super_admin\CategoryController as SuperCategoryController;
+use App\Http\Controllers\super_admin\ProductController as SuperProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Dashboard
-Route::get('/admin/dashboard', [dashdordController::class, 'index'])->name('admin.index');
+// ========== ROUTES ADMIN (accessibles à tous les connectés) ==========
+Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
+    // Dashboard admin
+    Route::get('/dashboard', [dashdordController::class, 'index'])->name('index');
 
-// Clients
-Route::get('/admin/clients', [ClientController::class, 'index'])->name('admin.clients');
+    // Factures
+    Route::get('/factures', [ReportController::class, 'index'])->name('factures.index');
+    Route::get('/factures/create', [ReportController::class, 'create'])->name('factures.create');
+    Route::post('/factures', [ReportController::class, 'store'])->name('factures.store');
+    Route::get('/factures/{id}/edit', [ReportController::class, 'edit'])->name('factures.edit');
+    Route::put('/factures/{id}', [ReportController::class, 'update'])->name('factures.update');
+    Route::get('/factures/{id}/delete', [ReportController::class, 'delete'])->name('factures.delete');
+    Route::get('/factures/{id}/pdf', [ReportController::class, 'exportPdf'])->name('factures.pdf');
+    Route::get('/factures/export/all', [ReportController::class, 'exportAllPdf'])->name('factures.export.all');
+    Route::get('/factures/{id}/email', [ReportController::class, 'sendEmail'])->name('factures.email');
+    Route::get('/paiements/dashboard', [ReportController::class, 'paiementsDashboard'])->name('paiements.dashboard');
 
-// Categories
+    // Clients
+    Route::resource('clients', ClientController::class)->except(['edit', 'update']);
+    Route::get('clients/{client}/edit', [ClientController::class, 'edit'])->name('clients.edit');
+    Route::put('clients/{client}', [ClientController::class, 'update'])->name('clients.update');
+});
+
+// ========== ROUTES PUBLIQUES ADMIN (temporaires) ==========
 Route::get('/admin/category', [CategoryController::class, 'index'])->name('admin.category');
 Route::get('/admin/product', [ProductController::class, 'index'])->name('admin.product');
-route::get('/admin/reports', [ReportController::class, 'index'])->name('admin.reports');
-route::get('/admin/docs', [DocsController::class, 'index'])->name('admin.docs');
-route::get('/admin/errors', [ErrorsController::class, 'index'])->name('admin.errors');
+Route::get('/admin/reports', [ReportController::class, 'index'])->name('admin.reports');
+Route::get('/admin/docs', [DocsController::class, 'index'])->name('admin.docs');
+Route::get('/admin/errors', [ErrorsController::class, 'index'])->name('admin.errors');
+
+// ========== ROUTES SUPER ADMIN (middleware super_admin) ==========
+Route::prefix('admin/super')->middleware(['auth', 'super_admin'])->name('admin.super.')->group(function () {
+    // Dashboard Super Admin
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Gestion des utilisateurs
+    Route::resource('users', UserController::class)->except(['show']);
+    Route::post('users/{user}/toggle-active', [UserController::class, 'toggleActive'])->name('users.toggle-active');
+//vue categories
+Route::resource('categories', SuperCategoryController::class);
+    // Validation des catégories
+    Route::get('categories/pending', [SuperCategoryController::class, 'pending'])->name('categories.pending');
+    Route::post('categories/{category}/approve', [SuperCategoryController::class, 'approve'])->name('categories.approve');
+    Route::post('categories/{category}/reject', [SuperCategoryController::class, 'reject'])->name('categories.reject');
+    Route::resource('categories', SuperCategoryController::class)->except(['show']);
+// Produits
+Route::resource('produits', SuperProductController::class)->except(['show']);
+Route::get('produits/{produit}', [SuperProductController::class, 'show'])->name('produits.show');
+    });
+
+// ========== AUTHENTIFICATION ==========
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

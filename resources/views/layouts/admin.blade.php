@@ -15,7 +15,7 @@
   <!-- Tabler Icons -->
   <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet">
   <!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- ApexCharts -->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <!-- Custom CSS -->
@@ -97,28 +97,20 @@
 
         <!-- Dropdown -->
         <li class="ms-3 dropdown">
-          <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ asset('images/avatar/avatar-1.jpg') }}" alt="" class="avatar avatar-sm rounded-circle" />
-          </a>
-          <div class="dropdown-menu dropdown-menu-end p-0" style="min-width: 200px;">
-            <div>
-              <div class="d-flex gap-3 align-items-center border-dashed border-bottom px-3 py-3">
-                <img src="{{ asset('images/avatar/avatar-1.jpg') }}" alt="" class="avatar avatar-md rounded-circle" />
-                <div>
-                  <h4 class="mb-0 small">Shrina Tesla</h4>
-                  <p class="mb-0 small">@imshrina</p>
+    <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="avatar-circle">
+        {{ strtoupper(substr(auth()->user()->prenom ?? 'U', 0, 1) . substr(auth()->user()->nom ?? 'A', 0, 1)) }}
+    </a>
+    <div class="dropdown-menu dropdown-menu-end p-0" style="min-width: 200px;">
+        <div>
+            <div class="d-flex gap-3 align-items-center border-dashed border-bottom px-3 py-3">
+                <div class="avatar avatar-md rounded-circle avatar-circle-lg">
+                    {{ strtoupper(substr(auth()->user()->prenom ?? 'U', 0, 1) . substr(auth()->user()->nom ?? 'A', 0, 1)) }}
                 </div>
-              </div>
-              <div class="p-3 d-flex flex-column gap-1 small lh-lg">
-                <a href="{{ route('admin.index') }}">Home</a>
-                <a href="#!">Inbox</a>
-                <a href="#!">Chat</a>
-                <a href="#!">Activity</a>
-                <a href="#!">Account Settings</a>
-                <a href="">Logout</a>
-              </div>
+                <div>
+                    <h4 class="mb-0 small">{{ auth()->user()->prenom }} {{ auth()->user()->nom }}</h4>
+                    <p class="mb-0 small text-secondary">@{{ auth()->user()->username }}</p>
+                </div>
             </div>
-          </div>
         </li>
       </ul>
     </div>
@@ -140,38 +132,36 @@
         </a>
       </li>
       <li>
-    <a class="nav-link {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}" href="{{ route('admin.clients.index') }}">
-        <i class="ti ti-users"></i><span class="nav-text">Clients</span>
-    </a>
-</li>
-
+        <a class="nav-link {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}" href="{{ route('admin.clients.index') }}">
+          <i class="ti ti-users"></i><span class="nav-text">Clients</span>
+        </a>
+      </li>
       <li>
         <a class="nav-link {{ request()->routeIs('admin.category') ? 'active' : '' }}" href="{{ route('admin.category') }}">
           <i class="ti ti-box-seam"></i><span class="nav-text">Categories</span>
         </a>
       </li>
       <li>
-        <a class="nav-link {{ request()->routeIs('admin.produits') ? 'active' : '' }}" href="{{ route('admin.produits') }}">
+        <a class="nav-link {{ request()->routeIs('admin.product') ? 'active' : '' }}" href="{{ route('admin.product') }}">
           <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
         </a>
       </li>
-      <li>
-        <a class="nav-link {{ request()->routeIs('admin.commandes') ? 'active' : '' }}" href="{{ route('admin.commandes') }}">
-          <i class="ti ti-alert-circle"></i><span class="nav-text">Commandes</span>
-        </a>
-      </li>
-
-      <!-- ✅ LIGNE CORRIGÉE ICI ✅ -->
       <li>
         <a class="nav-link {{ request()->routeIs('admin.factures.*') ? 'active' : '' }}" href="{{ route('admin.factures.index') }}">
           <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
         </a>
       </li>
-      <!-- FIN DE LA CORRECTION -->
-
       <li class="px-4 pt-4 pb-2"><small class="nav-text">Account</small></li>
-      <li><a class="nav-link" href=""><i class="ti ti-logout"></i><span class="nav-text">Log in</span></a></li>
-      <li><a class="nav-link" href=""><i class="ti ti-user-plus"></i><span class="nav-text">Sign up</span></a></li>
+      @auth
+        <li>
+          <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="ti ti-logout"></i><span class="nav-text">Déconnexion</span>
+          </a>
+        </li>
+      @else
+        <li><a class="nav-link" href="{{ route('login') }}"><i class="ti ti-logout"></i><span class="nav-text">Log in</span></a></li>
+        <li><a class="nav-link" href=""><i class="ti ti-user-plus"></i><span class="nav-text">Sign up</span></a></li>
+      @endauth
     </ul>
   </aside>
 
@@ -189,6 +179,11 @@
       </div>
     </div>
   </main>
+
+  <!-- Formulaire de déconnexion caché -->
+  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+  </form>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
