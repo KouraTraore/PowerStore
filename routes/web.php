@@ -33,7 +33,6 @@ Route::get('/admin/produits', [ProductController::class, 'index'])->name('admin.
 
 // Docs
 Route::get('/admin/docs', [DocsController::class, 'index'])->name('admin.docs');
-
 // ========== ROUTES FACTURES (ReportController) ==========
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/factures', [ReportController::class, 'index'])->name('factures.index');
@@ -44,6 +43,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::put('/factures/{id}', [ReportController::class, 'update'])->name('factures.update');
     Route::get('/factures/{id}/delete', [ReportController::class, 'delete'])->name('factures.delete');
     Route::get('/factures/{id}/pdf', [ReportController::class, 'exportPdf'])->name('factures.pdf');
+    Route::get('/factures/{id}/print', [ReportController::class, 'printView'])->name('factures.print'); // ← AJOUTE CETTE LIGNE
     Route::get('/factures/export/all', [ReportController::class, 'exportAllPdf'])->name('factures.export.all');
     Route::get('/factures/{id}/email', [ReportController::class, 'sendEmail'])->name('factures.email');
     Route::get('/paiements/dashboard', [ReportController::class, 'paiementsDashboard'])->name('paiements.dashboard');

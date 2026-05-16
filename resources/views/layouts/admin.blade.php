@@ -180,6 +180,45 @@
     </ul>
   </aside>
 
+  <!-- TOAST CONTAINER (notifications modernes en haut à droite) -->
+  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+      @if(session('success'))
+          <div class="toast align-items-center text-white bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+              <div class="d-flex">
+                  <div class="toast-body">
+                      <i class="ti ti-check-circle me-2"></i> {{ session('success') }}
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+              </div>
+          </div>
+      @endif
+
+      @if(session('error'))
+          <div class="toast align-items-center text-white bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+              <div class="d-flex">
+                  <div class="toast-body">
+                      <i class="ti ti-alert-circle me-2"></i> {{ session('error') }}
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+              </div>
+          </div>
+      @endif
+
+      @if($errors->any())
+          <div class="toast align-items-center text-white bg-warning border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+              <div class="d-flex">
+                  <div class="toast-body">
+                      <i class="ti ti-alert-triangle me-2"></i>
+                      @foreach($errors->all() as $error)
+                          {{ $error }}<br>
+                      @endforeach
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+              </div>
+          </div>
+      @endif
+  </div>
+
   <!-- MAIN CONTENT -->
   <main id="content" class="content py-10">
     <div class="container-fluid">
@@ -198,6 +237,19 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ asset('js/main.js') }}" type="module"></script>
+  
+  <!-- Initialisation des toasts -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+      toastElList.forEach(function (toastEl) {
+        new bootstrap.Toast(toastEl, {
+          autohide: true,
+          delay: 5000
+        }).show();
+      });
+    });
+  </script>
   
   @stack('scripts')
 </body>

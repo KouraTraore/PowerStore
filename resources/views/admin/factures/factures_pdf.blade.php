@@ -1,36 +1,44 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Impression - Facture {{ $facture->nomf }}</title>
+    <meta charset="utf-8">
+    <title>Facture {{ $facture->nomf }}</title>
     <style>
         @page { margin: 2cm; }
-        body { font-family: Arial, sans-serif; font-size: 12px; line-height: 1.4; }
-        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 15px; }
-        .logo { font-size: 24px; font-weight: bold; color: #667eea; }
-        .facture-info, .client-info { margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background: #f2f2f2; }
+        body { font-family: 'DejaVu Sans', Arial, sans-serif; font-size: 12px; line-height: 1.4; }
+        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #667eea; padding-bottom: 15px; }
+        .logo { font-size: 28px; font-weight: bold; color: #667eea; }
+        .company-info { margin-top: 5px; font-size: 11px; color: #666; }
+        .facture-info { margin-bottom: 30px; }
+        .client-info { margin-bottom: 30px; background: #f8f9fa; padding: 15px; border-radius: 8px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f2f2f2; font-weight: bold; }
         .text-end { text-align: right; }
-        .total { font-weight: bold; text-align: right; }
-        .footer { text-align: center; margin-top: 50px; font-size: 10px; color: #666; }
-        @media print {
-            body { margin: 0; }
-        }
+        .total { font-size: 16px; font-weight: bold; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 2px solid #667eea; }
+        .footer { text-align: center; margin-top: 50px; font-size: 10px; color: #999; }
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+        .badge-success { background: #10b981; color: white; }
+        .badge-danger { background: #ef4444; color: white; }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="logo">POWERSTOCK</div>
-        <div>Bamako - Mali | Tél: 77-90-34-44 | contact@powerstock.com</div>
+        <div class="company-info">
+            Bamako - Mali | Tél: 77-90-34-44 | Email: contact@powerstock.com
+        </div>
     </div>
 
     <div class="facture-info">
         <h2>FACTURE {{ $facture->nomf }}</h2>
-        <p><strong>Date :</strong> {{ \Carbon\Carbon::parse($facture->datef)->format('d/m/Y H:i') }}</p>
-        <p><strong>Statut :</strong> 
-            @if($facture->etatf == 1) Payée @else Non payée @endif
+        <p>Date d'émission : {{ \Carbon\Carbon::parse($facture->datef)->format('d/m/Y H:i') }}</p>
+        <p>Statut : 
+            @if($facture->etatf == 1)
+                <span class="badge badge-success">Payée</span>
+            @else
+                <span class="badge badge-danger">Non payée</span>
+            @endif
         </p>
     </div>
 
@@ -87,13 +95,8 @@
     </div>
 
     <div class="footer">
-        <p>Merci de votre confiance. Ce document fait office de facture officielle.</p>
+        <p>Merci de votre confiance. Règlement à effectuer sous 30 jours.</p>
+        <p>Ce document fait office de facture officielle.</p>
     </div>
-
-    <script>
-        window.onload = function() {
-            window.print();
-        };
-    </script>
 </body>
 </html>

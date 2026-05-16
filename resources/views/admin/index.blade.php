@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', 'Dashboard - InApp Inventory Dashboard')
+@section('title', 'Dashboard - POWERSTOCK')
 
 @section('content')
 <div class="row">
   <div class="col-12">
     <div class="mb-6">
       <h1 class="fs-3 mb-1">Dashboard</h1>
-      <p>Your main content goes here…</p>
+      <p>Votre tableau de bord POWERSTORE</p>
     </div>
   </div>
 </div>
@@ -20,9 +20,11 @@
           <i class="ti ti-report-analytics fs-4"></i>
         </div>
         <div>
-          <h2 class="mb-3 fs-6">Total Sales</h2>
-          <h3 class="fw-bold mb-0">$25,000</h3>
-          <p class="text-primary mb-0 small">+5% since last month</p>
+          <h2 class="mb-3 fs-6">Chiffre d'affaires</h2>
+<h3 class="fw-bold mb-0" style="white-space: nowrap;">
+     {{ number_format($caTotal, 0, ',', ' ') }}  FCFA
+</h3>
+          <p class="text-primary mb-0 small">Global</p>
         </div>
       </div>
     </div>
@@ -34,9 +36,9 @@
           <i class="ti ti-repeat fs-4"></i>
         </div>
         <div>
-          <h2 class="mb-3 fs-6">Total Purchase</h2>
-          <h3 class="fw-bold mb-0">$18,000</h3>
-          <p class="text-success mb-0 small">+22% since last month</p>
+          <h2 class="mb-3 fs-6">Commandes livrées</h2>
+          <h3 class="fw-bold mb-0">{{ $commandesLivrees }}</h3>
+          <p class="text-success mb-0 small">sur {{ $totalCommandes }} commandes</p>
         </div>
       </div>
     </div>
@@ -48,9 +50,9 @@
           <i class="ti ti-currency-dollar fs-4"></i>
         </div>
         <div>
-          <h2 class="mb-3 fs-6">Total Expenses</h2>
-          <h3 class="fw-bold mb-0">$9,000</h3>
-          <p class="text-info mb-0 small">+10% since last month</p>
+          <h2 class="mb-3 fs-6">Total factures</h2>
+          <h3 class="fw-bold mb-0">{{ $totalFactures }}</h3>
+          <p class="text-info mb-0 small">{{ $facturesPayees }} payées</p>
         </div>
       </div>
     </div>
@@ -62,9 +64,9 @@
           <i class="ti ti-notes fs-4"></i>
         </div>
         <div>
-          <h2 class="mb-3 fs-6">Invoice Due</h2>
-          <h3 class="fw-bold mb-0">$25,000</h3>
-          <p class="text-warning mb-0 small">+35% since last month</p>
+          <h2 class="mb-3 fs-6">Clients</h2>
+          <h3 class="fw-bold mb-0">{{ $totalClients }}</h3>
+          <p class="text-warning mb-0 small">fidèles clients</p>
         </div>
       </div>
     </div>
@@ -77,14 +79,14 @@
       <div class="card-body p-4">
         <div class="d-flex justify-content-between border-bottom pb-5 mb-3">
           <div>
-            <h3 class="fw-bold h4">$25,458</h3>
-            <span>Total Profit</span>
+            <h3 class="fw-bold h4">{{ number_format($caTotal, 0, ',', ' ') }} FCFA</h3>
+            <span>Chiffre d'affaires total</span>
           </div>
           <div><i class="ti ti-layers-subtract fs-1 text-primary"></i></div>
         </div>
         <div class="d-flex justify-content-between align-items-center small">
-          <div class="text-muted"><span class="text-success">+35%</span> vs Last Month</div>
-          <div><a href="#" class="link-primary text-decoration-underline">View</a></div>
+          <div class="text-muted">Depuis le début</div>
+          <div><a href="{{ route('admin.commandes.index') }}" class="link-primary text-decoration-underline">Voir</a></div>
         </div>
       </div>
     </div>
@@ -94,14 +96,14 @@
       <div class="card-body p-4">
         <div class="d-flex justify-content-between border-bottom pb-5 mb-3">
           <div>
-            <h3 class="fw-bold h4">$45,458</h3>
-            <span>Total Payment Returns</span>
+            <h3 class="fw-bold h4">{{ number_format($montantTotalFactures, 0, ',', ' ') }} FCFA</h3>
+            <span>Montant total facturé</span>
           </div>
           <div><i class="ti ti-credit-card fs-1 text-danger"></i></div>
         </div>
         <div class="d-flex justify-content-between align-items-center small">
-          <div class="text-muted"><span class="text-danger">-20%</span> vs Last Month</div>
-          <div><a href="#" class="link-primary text-decoration-underline">View</a></div>
+          <div class="text-muted">{{ $facturesPayees }} payées sur {{ $totalFactures }}</div>
+          <div><a href="{{ route('admin.factures.index') }}" class="link-primary text-decoration-underline">Voir</a></div>
         </div>
       </div>
     </div>
@@ -111,14 +113,14 @@
       <div class="card-body p-4">
         <div class="d-flex justify-content-between border-bottom pb-5 mb-3">
           <div>
-            <h3 class="fw-bold h4">$34,458</h3>
-            <span>Total Expenses</span>
+            <h3 class="fw-bold h4">{{ number_format($commandesEnAttente) }}</h3>
+            <span>Commandes en attente</span>
           </div>
           <div><i class="ti ti-cash-banknote fs-1 text-warning"></i></div>
         </div>
         <div class="d-flex justify-content-between align-items-center small">
-          <div class="text-muted"><span class="text-warning">-20%</span> vs Last Month</div>
-          <div><a href="#" class="link-primary text-decoration-underline">View</a></div>
+          <div class="text-muted">À traiter</div>
+          <div><a href="{{ route('admin.commandes.index') }}" class="link-primary text-decoration-underline">Voir</a></div>
         </div>
       </div>
     </div>
@@ -129,33 +131,48 @@
   <div class="col-12 col-lg-6">
     <div class="card">
       <div class="card-header d-flex justify-content-between align-items-center bg-transparent px-4 py-3">
-        <h3 class="h5 mb-0">Sales vs Purchase</h3>
-        <div><select class="form-select form-select-sm"><option selected>This Year</option><option>This Month</option><option>This Week</option></select></div>
+        <h3 class="h5 mb-0">Évolution du chiffre d'affaires</h3>
+        <div><span class="badge bg-primary">12 derniers mois</span></div>
       </div>
-      <div class="card-body p-4"><div id="salesPurchaseChart"></div></div>
+      <div class="card-body p-4">
+        <canvas id="caChart" height="300"></canvas>
+      </div>
     </div>
   </div>
   <div class="col-12 col-lg-6">
     <div class="card">
       <div class="card-header d-flex justify-content-between align-items-center bg-transparent px-4 py-3">
-        <h3 class="h5 mb-0">Overall Information</h3>
-        <div><select class="form-select form-select-sm"><option selected>Last 6 Months</option><option>This Month</option><option>This Week</option></select></div>
+        <h3 class="h5 mb-0">Aperçu global</h3>
+        <div><span class="badge bg-primary">En temps réel</span></div>
       </div>
       <div class="card-body p-4">
-        <h3 class="h6">Customers Overview</h3>
-        <div class="row align-items-center">
-          <div class="col-sm-6"><div id="customerChart"></div></div>
-          <div class="col-sm-6">
-            <div class="row">
-              <div class="col-6 border-end"><div class="text-center"><h2 class="mb-1">5.5K</h2><p class="text-success mb-2">First Time</p><span class="badge bg-success"><i class="ti ti-arrow-up-left me-1"></i>25%</span></div></div>
-              <div class="col-6"><div class="text-center"><h2 class="mb-1">3.5K</h2><p class="text-warning mb-2">Return</p><span class="badge bg-success"><i class="ti ti-arrow-up-left me-1"></i>21%</span></div></div>
+        <div class="row text-center">
+          <div class="col-6 border-end">
+            <div class="text-center">
+              <h2 class="mb-1">{{ $totalClients }}</h2>
+              <p class="text-success mb-2">Clients</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="text-center">
+              <h2 class="mb-1">{{ $totalCommandes }}</h2>
+              <p class="text-warning mb-2">Commandes</p>
             </div>
           </div>
         </div>
         <div class="row text-center border-top mt-4 pt-4">
-          <div class="col-4 border-end"><h3 class="fw-bold mb-2">6987</h3><small class="text-secondary">Suppliers</small></div>
-          <div class="col-4 border-end"><h3 class="fw-bold mb-2">4896</h3><small class="text-secondary">Customers</small></div>
-          <div class="col-4"><h3 class="fw-bold mb-2">487</h3><small class="text-secondary">Orders</small></div>
+          <div class="col-4 border-end">
+            <h3 class="fw-bold mb-2">{{ $commandesLivrees }}</h3>
+            <small class="text-secondary">Livrées</small>
+          </div>
+          <div class="col-4 border-end">
+            <h3 class="fw-bold mb-2">{{ $commandesEnAttente }}</h3>
+            <small class="text-secondary">En attente</small>
+          </div>
+          <div class="col-4">
+            <h3 class="fw-bold mb-2">{{ $commandesAnnulees }}</h3>
+            <small class="text-secondary">Annulées</small>
+          </div>
         </div>
       </div>
     </div>
@@ -166,45 +183,91 @@
   <div class="col-lg-4">
     <div class="card h-100">
       <div class="card-header bg-white d-flex justify-content-between align-items-center px-4 py-3">
-        <h4 class="mb-0 h5">Top Selling Products</h4>
-        <button class="btn btn-sm btn-outline-secondary"><i class="ti ti-calendar"></i> Today</button>
+        <h4 class="mb-0 h5">Top produits vendus</h4>
+        <button class="btn btn-sm btn-outline-secondary" disabled><i class="ti ti-calendar"></i> Ce mois</button>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-2.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">Wireless Earphones</p><div class="d-flex align-items-center gap-2 text-muted"><small class="fw-semibold">$89</small><small>•</small><small>1,250 Units</small></div></div><span class="badge bg-danger-subtle text-danger border border-danger">18%</span></li>
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-1.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">Gaming Joy Stick</p><div class="d-flex align-items-center gap-2 text-muted"><small class="fw-semibold">$49</small><small>•</small><small>5,420 Units</small></div></div><span class="badge bg-primary-subtle text-primary border border-primary">32%</span></li>
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-3.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">Smart Watch Pro</p><div class="d-flex align-items-center gap-2 text-muted"><small class="fw-semibold">$98</small><small>•</small><small>862 Units</small></div></div><span class="badge bg-info-subtle text-info border border-info">22%</span></li>
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-4.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">USB-C Fast Charger</p><div class="d-flex align-items-center gap-2 text-muted"><small class="fw-semibold">$35</small><small>•</small><small>3,200 Units</small></div></div><span class="badge bg-success-subtle text-success border border-success">28%</span></li>
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-5.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">Portable Bluetooth Speaker</p><div class="d-flex align-items-center gap-2 text-muted"><small class="fw-semibold">$65</small><small>•</small><small>2,890 Units</small></div></div><span class="badge bg-warning-subtle text-warning border border-warning">25%</span></li>
+        @forelse($topProduits as $produit)
+        <li class="list-group-item d-flex align-items-center gap-3">
+          <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <i class="ti ti-package fs-3 text-secondary"></i>
+          </div>
+          <div class="flex-grow-1">
+            <p class="mb-1">{{ $produit->nomp }}</p>
+            <div class="d-flex align-items-center gap-2 text-muted">
+              <small class="fw-semibold">{{ number_format($produit->prix, 0, ',', ' ') }} FCFA</small>
+              <small>•</small>
+              <small>{{ $produit->total_vendus }} vendu(s)</small>
+            </div>
+          </div>
+          <span class="badge bg-primary-subtle text-primary border border-primary">{{ round(($produit->total_vendus / max(1, $totalCommandes)) * 100) }}%</span>
+        </li>
+        @empty
+        <li class="list-group-item text-center py-4">Aucune vente enregistrée</li>
+        @endforelse
       </ul>
     </div>
   </div>
+
   <div class="col-lg-4">
     <div class="card h-100">
       <div class="card-header bg-white d-flex justify-content-between align-items-center px-4 py-3">
-        <h4 class="mb-0 h5">Low Stock Products</h4>
-        <a href="#" class="small text-primary text-decoration-underline">View All</a>
+        <h4 class="mb-0 h5">Stock faible (< 10)</h4>
+        <a href="{{ route('admin.product.index') }}" class="small text-primary text-decoration-underline">Voir tout</a>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-8.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">Wireless Headphones</p><small>ID: #554433</small></div><div class="d-flex flex-column gap-0 align-items-center"><span class="fw-semibold text-primary">06</span><small class="text-muted">In Stock</small></div></li>
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-4.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">USB-C Cable Pack</p><small>ID: #887766</small></div><div class="d-flex flex-column gap-0 align-items-center"><span class="fw-semibold text-primary">09</span><small class="text-muted">In Stock</small></div></li>
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-10.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">Phone Screen Protector</p><small>ID: #332211</small></div><div class="d-flex flex-column gap-0 align-items-center"><span class="fw-semibold text-primary">03</span><small class="text-muted">In Stock</small></div></li>
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-4.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">Portable Charger 20000mAh</p><small>ID: #998877</small></div><div class="d-flex flex-column gap-0 align-items-center"><span class="fw-semibold text-primary">07</span><small class="text-muted">In Stock</small></div></li>
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-6.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">Mechanical Keyboard RGB</p><small>ID: #665544</small></div><div class="d-flex flex-column gap-0 align-items-center"><span class="fw-semibold text-primary">02</span><small class="text-muted">In Stock</small></div></li>
+        @forelse($lowStockProducts as $produit)
+        <li class="list-group-item d-flex align-items-center gap-3">
+          <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <i class="ti ti-box fs-3 text-secondary"></i>
+          </div>
+          <div class="flex-grow-1">
+            <p class="mb-1">{{ $produit->nomp }}</p>
+            <small>ID: #{{ $produit->id }}</small>
+          </div>
+          <div class="d-flex flex-column gap-0 align-items-center">
+            <span class="fw-semibold text-danger">{{ $produit->quantite }}</span>
+            <small class="text-muted">Restant</small>
+          </div>
+        </li>
+        @empty
+        <li class="list-group-item text-center py-4">Tous les stocks sont suffisants</li>
+        @endforelse
       </ul>
     </div>
   </div>
+
   <div class="col-lg-4">
     <div class="card h-100">
       <div class="card-header bg-white d-flex justify-content-between align-items-center px-4 py-3">
-        <h4 class="mb-0 h5">Recent Sales</h4>
-        <button class="btn btn-sm btn-outline-secondary"><i class="ti ti-calendar-event"></i> Weekly</button>
+        <h4 class="mb-0 h5">Dernières commandes</h4>
+        <button class="btn btn-sm btn-outline-secondary" disabled><i class="ti ti-calendar-event"></i> Récentes</button>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-7.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">MacBook Pro 16"</p><div class="d-flex align-items-center gap-2 text-muted"><small class="fw-semibold">Computers</small><small>•</small><small>$2,499</small></div></div><span class="badge bg-success-subtle text-success">Completed</span></li>
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-9.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">AirPods Pro Max</p><div class="d-flex align-items-center gap-2 text-muted"><small class="fw-semibold">Audio</small><small>•</small><small>$549</small></div></div><span class="badge bg-primary-subtle text-primary">Processing</span></li>
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-8.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">iPad Air 11"</p><div class="d-flex align-items-center gap-2 text-muted"><small class="fw-semibold">Tablets</small><small>•</small><small>$799</small></div></div><span class="badge bg-success-subtle text-success">Completed</span></li>
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-3.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">Apple Watch Ultra</p><div class="d-flex align-items-center gap-2 text-muted"><small class="fw-semibold">Wearables</small><small>•</small><small>$799</small></div></div><span class="badge bg-warning-subtle text-warning">Pending</span></li>
-        <li class="list-group-item d-flex align-items-center gap-3"><img src="{{ asset('images/product-6.png') }}" class="rounded" width="48"><div class="flex-grow-1"><p class="mb-1">Magic Keyboard</p><div class="d-flex align-items-center gap-2 text-muted"><small class="fw-semibold">Accessories</small><small>•</small><small>$299</small></div></div><span class="badge bg-danger-subtle text-danger">Cancelled</span></li>
+        @forelse($dernieresCommandes as $commande)
+        <li class="list-group-item d-flex align-items-center gap-3">
+          <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <i class="ti ti-shopping-cart fs-3 text-secondary"></i>
+          </div>
+          <div class="flex-grow-1">
+            <p class="mb-1">Commande #{{ $commande->id }}</p>
+            <div class="d-flex align-items-center gap-2 text-muted">
+              <small>{{ $commande->client->prenom ?? '' }} {{ $commande->client->nomc ?? '' }}</small>
+              <small>•</small>
+              <small>{{ number_format($commande->total_ttc, 0, ',', ' ') }} FCFA</small>
+            </div>
+          </div>
+          @if($commande->statut == 'livree')
+            <span class="badge bg-success-subtle text-success">Livrée</span>
+          @elseif($commande->statut == 'en_attente')
+            <span class="badge bg-warning-subtle text-warning">En attente</span>
+          @else
+            <span class="badge bg-danger-subtle text-danger">Annulée</span>
+          @endif
+        </li>
+        @empty
+        <li class="list-group-item text-center py-4">Aucune commande récente</li>
+        @endforelse
       </ul>
     </div>
   </div>
@@ -212,28 +275,36 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  // Sales vs Purchase Chart
-  var salesPurchaseOptions = {
-    series: [{ name: 'Sales', data: [30, 40, 35, 50, 49, 60, 70, 91, 125] }, { name: 'Purchase', data: [20, 29, 37, 36, 44, 45, 50, 58, 70] }],
-    chart: { height: 350, type: 'area', toolbar: { show: false } },
-    dataLabels: { enabled: false },
-    stroke: { curve: 'smooth' },
-    xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'] },
-    colors: ['#0d6efd', '#198754']
-  };
-  var salesPurchaseChart = new ApexCharts(document.querySelector("#salesPurchaseChart"), salesPurchaseOptions);
-  salesPurchaseChart.render();
-
-  // Customer Chart
-  var customerOptions = {
-    series: [65, 35],
-    chart: { height: 250, type: 'donut' },
-    labels: ['First Time', 'Return'],
-    colors: ['#0d6efd', '#ffc107'],
-    legend: { position: 'bottom' }
-  };
-  var customerChart = new ApexCharts(document.querySelector("#customerChart"), customerOptions);
-  customerChart.render();
+  // Graphique du chiffre d'affaires
+  const ctx = document.getElementById('caChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: {!! json_encode($moisLabels) !!},
+      datasets: [{
+        label: 'Chiffre d\'affaires (FCFA)',
+        data: {!! json_encode($moisData) !!},
+        borderColor: '#0d6efd',
+        backgroundColor: 'rgba(13, 110, 253, 0.05)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3,
+        pointBackgroundColor: '#0d6efd'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { callback: value => value.toLocaleString('fr-FR') + ' FCFA' }
+        }
+      }
+    }
+  });
 </script>
 @endpush

@@ -14,8 +14,13 @@
                 <p class="text-secondary">Détail complet de la facture</p>
             </div>
             <div>
+                <!-- Bouton PDF (téléchargement) -->
                 <a href="{{ route('admin.factures.pdf', $facture->id) }}" class="btn btn-info me-2" target="_blank">
-                    <i class="ti ti-printer me-1"></i> PDF
+                    <i class="ti ti-file-pdf me-1"></i> PDF
+                </a>
+                <!-- Bouton Imprimer (impression directe sans PDF) -->
+                <a href="{{ route('admin.factures.print', $facture->id) }}" class="btn btn-secondary me-2" target="_blank">
+                    <i class="ti ti-printer me-1"></i> Imprimer
                 </a>
                 <a href="{{ route('admin.factures.index') }}" class="btn btn-secondary">
                     <i class="ti ti-arrow-left me-1"></i> Retour
