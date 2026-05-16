@@ -38,17 +38,6 @@
                 <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="removeImage('create')">Supprimer l'image</button>
               </div>
             </div>
-
-            <div class="col-12">
-              <label for="create_status" class="form-label">Statut <span class="text-danger">*</span></label>
-              <select class="form-select" id="create_status" name="status" required>
-                <option value="">Sélectionnez un statut</option>
-                <option value="pending" selected>En attente</option>
-                <option value="approved">Approuvée</option>
-                <option value="rejected">Rejetée</option>
-              </select>
-              <div class="invalid-feedback" id="create_statusError"></div>
-            </div>
           </div>
         </div>
         <div class="modal-footer">

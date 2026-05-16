@@ -154,7 +154,7 @@
     <i class="ti ti-alert-triangle"></i>
     <div>
         <strong>{{ number_format($facturesImpayees, 0, ',', ' ') }} FCFA d'impayés</strong>
-        <a href="#" style="color:inherit;text-decoration:underline;">Voir les factures →</a>
+        <a href="{{ route('admin.factures.index') }}" style="color:inherit;text-decoration:underline;">Voir les factures →</a>
     </div>
 </div>
 @endif

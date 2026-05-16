@@ -5,7 +5,7 @@ namespace App\Http\Controllers\super_admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\User;
-use App\Models\Produit;
+use App\Models\Product;
 use App\Models\Commande;
 use App\Models\Facture;
 
@@ -26,8 +26,8 @@ class DashboardController extends Controller
         $totalUsers      = User::count();
         $usersActifs = User::where('is_active', 1)->count();
         $totalCategories = Category::count();
-        $totalProduits   = Produit::count();
-        $valeurStock     = Produit::sum(Produit::raw('prix * quantite'));
+        $totalProduits   = Product::count();
+        $valeurStock     = Product::sum(Product::raw('prix * quantite'));
 
         // ---------- Ventes mensuelles ----------
         $ventesMensuelles = Commande::where('statut', 'livree')
@@ -44,7 +44,7 @@ class DashboardController extends Controller
     ->get();
 
         // ---------- Produits en faible stock ----------
-        $produitsFaibleStock = Produit::where('quantite', '<', 10)
+        $produitsFaibleStock = Product::where('quantite', '<', 10)
             ->orderBy('quantite')
             ->limit(5)
             ->get();

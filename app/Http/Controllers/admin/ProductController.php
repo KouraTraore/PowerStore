@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends BaseController
 {
-    
+
 
     /**
      * Liste des produits avec filtres (INDEX)
@@ -20,18 +20,18 @@ class ProductController extends BaseController
     public function index(Request $request)
     {
         $query = Product::with('category');
-        
+
         // 🔍 RECHERCHE par nom du produit
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where('nomp', 'like', '%' . $search . '%');
         }
-        
+
         // 🏷️ FILTRE par catégorie
         if ($request->filled('category') && $request->category != '') {
             $query->where('categorie_id', $request->category);
         }
-        
+
         // 📦 FILTRE par stock (low = stock faible, out = rupture)
         if ($request->filled('stock')) {
             if ($request->stock == 'low') {
@@ -40,7 +40,7 @@ class ProductController extends BaseController
                 $query->where('quantite', '<=', 0);
             }
         }
-        
+
         // 🔄 TRI
         $sort = $request->get('sort', 'id_desc');
         switch ($sort) {
@@ -68,10 +68,10 @@ class ProductController extends BaseController
             default:
                 $query->orderBy('id', 'desc');
         }
-        
+
         // 📄 Pagination (avec conservation des paramètres de filtre)
         $products = $query->paginate(15)->withQueryString();
-        
+
         // 📊 Statistiques pour le dashboard
         $stats = [
             'total' => Product::count(),
@@ -80,10 +80,10 @@ class ProductController extends BaseController
             'low_stock' => Product::where('quantite', '>', 0)->where('quantite', '<', 5)->count(),
             'out_stock' => Product::where('quantite', '<=', 0)->count(),
         ];
-        
+
         // 🏷️ Récupérer les catégories pour le filtre
-        $categories = Category::orderBy('nomcat')->get();
-        
+        $categories =  Category::where('status', 'approved')->orderBy('nomcat')->get();
+
         return view('admin.product.index', compact('products', 'stats', 'categories'));
     }
 
@@ -92,7 +92,7 @@ class ProductController extends BaseController
      */
     public function create()
     {
-        $categories = Category::orderBy('nomcat')->get();
+        $categories = Category::where('status', 'approved')->orderBy('nomcat')->get();
         return view('admin.product.create', compact('categories'));
     }
 
@@ -118,7 +118,7 @@ class ProductController extends BaseController
             'categorie_id' => $request->categorie_id,
             'created_by' => Auth::id(),
         ];
-        
+
         // 🖼️ Gestion de l'image
         if ($request->hasFile('product_image')) {
             $file = $request->file('product_image');
@@ -158,7 +158,7 @@ class ProductController extends BaseController
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
-        
+
         $request->validate([
             'nomp' => 'required|string|max:255',
             'prix' => 'required|integer|min:0',
@@ -175,7 +175,7 @@ class ProductController extends BaseController
             'description' => $request->description,
             'categorie_id' => $request->categorie_id,
         ];
-        
+
         // 🖼️ Gestion de la nouvelle image
         if ($request->hasFile('product_image')) {
             // Supprimer l'ancienne image
@@ -183,7 +183,7 @@ class ProductController extends BaseController
                 $oldPath = str_replace('storage/', '', $product->image);
                 Storage::disk('public')->delete($oldPath);
             }
-            
+
             $file = $request->file('product_image');
             $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('products', $filename, 'public');
@@ -220,7 +220,7 @@ class ProductController extends BaseController
     public function destroy(Request $request, $id)
     {
         $product = Product::findOrFail($id);
-        
+
         // ✅ Vérification de confirmation (SUPPRIMER)
         if ($request->input('confirm') !== 'SUPPRIMER') {
             return redirect()->route('admin.product.delete.confirm', $product->id)

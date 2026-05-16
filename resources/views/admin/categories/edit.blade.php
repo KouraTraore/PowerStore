@@ -39,17 +39,6 @@
                 <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="removeImage('edit')">Supprimer l'image</button>
               </div>
             </div>
-
-            <div class="col-12">
-              <label for="edit_status" class="form-label">Statut <span class="text-danger">*</span></label>
-              <select class="form-select" id="edit_status" name="status" required>
-                <option value="">Sélectionnez un statut</option>
-                <option value="pending">En attente</option>
-                <option value="approved">Approuvée</option>
-                <option value="rejected">Rejetée</option>
-              </select>
-              <div class="invalid-feedback" id="edit_statusError"></div>
-            </div>
           </div>
         </div>
         <div class="modal-footer">

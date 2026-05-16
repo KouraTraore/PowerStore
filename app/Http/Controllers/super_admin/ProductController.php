@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\super_admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Produit;
+use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -13,13 +13,13 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $produits = Produit::with('category')
+        $produits = Product::with('category')
             ->orderByDesc('id')
             ->paginate(10);
 
-        $totalProduits = Produit::count();
-        $faibleStock = Produit::where('quantite', '<', 10)->count();
-        $valeurStock = Produit::sum(Produit::raw('prix * quantite'));
+        $totalProduits = Product::count();
+        $faibleStock = Product::where('quantite', '<', 10)->count();
+        $valeurStock = Product::sum(Product::raw('prix * quantite'));
         $categoriesCount = Category::count();
 
         return view('super_admin.products.index', compact(
@@ -55,25 +55,25 @@ class ProductController extends Controller
 
         $validated['created_by'] = Auth::id();
 
-        Produit::create($validated);
+        Product::create($validated);
 
         return redirect()->route('admin.super.produits.index')
             ->with('success', 'Produit créé avec succès.');
     }
 
-    public function show(Produit $produit)
+    public function show(Product $product)
     {
-        $produit->load('category', 'creator');
-        return view('super_admin.products.show', compact('produit'));
+        $product->load('category', 'creator');
+        return view('super_admin.products.show', compact('product'));
     }
 
-    public function edit(Produit $produit)
+    public function edit(Product $product)
     {
         $categories = Category::where('status', 'approved')->orderBy('nomcat')->get();
-        return view('super_admin.products.edit', compact('produit', 'categories'));
+        return view('super_admin.products.edit', compact('product', 'categories'));
     }
 
-    public function update(Request $request, Produit $produit)
+    public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
             'nomp'          => 'required|string|max:50',
@@ -86,8 +86,8 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             // Supprimer l'ancienne image
-            if ($produit->image) {
-                $oldPath = str_replace('storage/', 'public/', $produit->image);
+            if ($product->image) {
+                $oldPath = str_replace('storage/', 'public/', $product->image);
                 Storage::delete($oldPath);
             }
             $path = $request->file('image')->store('produits', 'public');
@@ -96,26 +96,26 @@ class ProductController extends Controller
 
         // Suppression d'image demandée
         if ($request->has('delete_image') && $request->delete_image == '1') {
-            if ($produit->image) {
-                $oldPath = str_replace('storage/', 'public/', $produit->image);
+            if ($product->image) {
+                $oldPath = str_replace('storage/', 'public/', $product->image);
                 Storage::delete($oldPath);
             }
             $validated['image'] = null;
         }
 
-        $produit->update($validated);
+        $product->update($validated);
 
         return redirect()->route('admin.super.produits.index')
             ->with('success', 'Produit mis à jour.');
     }
 
-    public function destroy(Produit $produit)
+    public function destroy(Product $product)
     {
-        if ($produit->image) {
-            $oldPath = str_replace('storage/', 'public/', $produit->image);
+        if ($product->image) {
+            $oldPath = str_replace('storage/', 'public/', $product->image);
             Storage::delete($oldPath);
         }
-        $produit->delete();
+        $product->delete();
 
         return back()->with('success', 'Produit supprimé.');
     }

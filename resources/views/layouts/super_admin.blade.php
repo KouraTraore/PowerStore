@@ -196,6 +196,9 @@
         #sidebar.collapsed .sb-logo-text {
             opacity: 0; width: 0;
         }
+.sb-logo-img { flex-shrink: 0; }
+#sidebar.collapsed .logo-full { display: none; }
+#sidebar:not(.collapsed) .logo-mini { display: none; }
 
         /* ── Navigation section label ── */
         .sb-section {
@@ -653,13 +656,14 @@
 <aside id="sidebar">
 
     {{-- ── Logo PowerStock ── --}}
-    <div class="sb-brand">
-        <div class="sb-logo-icon">PS</div>
-        <div class="sb-logo-text">
-            <span class="sb-logo-name">PowerStock</span>
-            <span class="sb-logo-badge">Super Admin</span>
-        </div>
+ <div class="sb-brand">
+    <img src="{{ asset('images/logo-full.svg') }}" class="sb-logo-img logo-full" alt="Logo" width="36" height="36">
+    <img src="{{ asset('images/logo-mini.png') }}" class="sb-logo-img logo-mini" alt="Logo" width="24" height="24">
+    <div class="sb-logo-text">
+        <span class="sb-logo-name">PowerStock</span>
+        <span class="sb-logo-badge">Super Admin</span>
     </div>
+</div>
 
     {{-- ── Navigation principale ── --}}
     <div class="sb-section">Principal</div>

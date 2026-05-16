@@ -25,7 +25,7 @@ class User extends Authenticatable
 // Relation : les produits créés par cet utilisateur
 public function produits()
 {
-    return $this->hasMany(Produit::class, 'created_by');
+    return $this->hasMany(Product::class, 'created_by');
 }
 
 // Relation : les commandes créées par cet utilisateur

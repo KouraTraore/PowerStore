@@ -115,13 +115,15 @@
             margin-bottom: 20px;
         }
         .brand-icon {
-            width: 40px; height: 40px;
-            background: var(--accent);
-            border-radius: 10px;
+            width: 90px; height: 90px;
+            border-radius: 20px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 20px; font-weight: 800;
+            font-size: 40px; font-weight: 900;
             color: #fff;
         }
+        [data-theme="dark"] .brand-icon img {
+    filter: drop-shadow(0 0 2px rgba(255,255,255,.3));
+}
         .brand-name {
             font-size: 22px; font-weight: 700;
             color: var(--text-primary);
@@ -228,11 +230,7 @@
     <div class="login-card">
         <div class="login-header">
             <div class="brand">
-                <div class="brand-icon">PS</div>
-                <div>
-                    <div class="brand-name">PowerStock</div>
-                    <div class="brand-sub">Gestion de magasin</div>
-                </div>
+                <div class="brand-icon"><img src="{{ asset('images/logo-full.svg') }}" alt="PowerStock" style="height: 200px; width: 200px;" class="mb-2"> </div>
             </div>
             <h2>Connexion</h2>
             <p>Accédez à votre espace d’administration</p>

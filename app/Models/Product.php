@@ -10,18 +10,18 @@ class Product extends Model
     use HasFactory;
 
     protected $table = 'produits';
-    
+
     protected $primaryKey = 'id';
-    
+
     public $timestamps = true;
-    
+
     protected $fillable = [
-        'nomp', 
-        'prix', 
-        'quantite', 
-        'description', 
-        'image', 
-        'categorie_id', 
+        'nomp',
+        'prix',
+        'quantite',
+        'description',
+        'image',
+        'categorie_id',
         'created_by'
     ];
 
@@ -64,10 +64,13 @@ class Product extends Model
     {
         return $this->prix * $this->quantite;
     }
-
+public function getStockValueAttribute(): int
+{
+    return $this->prix * $this->quantite;
+}
     // Scopes
     public function scopeLowStock($query, $threshold = 5)
     {
         return $query->where('quantite', '<', $threshold);
     }
-} 
+}

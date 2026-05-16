@@ -65,7 +65,7 @@ class Category extends Model
 
     public function produits()
     {
-        return $this->hasMany(Produit::class, 'categorie_id');
+        return $this->hasMany(Product::class, 'categorie_id');
     }
 
     public function getNameAttribute()
