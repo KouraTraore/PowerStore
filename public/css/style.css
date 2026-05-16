@@ -209,6 +209,21 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.category-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  cursor: pointer;
+}
+
+.category-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.12);
+  border-color: rgba(230, 98, 57, 0.2);
+}
+
+.category-card:active {
+  transform: translateY(-2px) scale(0.99);
+}
+
 hr {
   margin: 1rem 0;
   color: inherit;

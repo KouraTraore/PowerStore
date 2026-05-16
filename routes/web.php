@@ -18,6 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 // ========== ROUTES ADMIN (accessibles à tous les connectés) ==========
 Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
     // Dashboard admin
@@ -72,3 +73,24 @@ Route::get('produits/{produit}', [SuperProductController::class, 'show'])->name(
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Admin routes
+Route::prefix('/admin')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.index');
+
+    // Category routes
+    Route::get('/category', [CategoryController::class, 'index'])->name('admin.category');
+    Route::post('/category', [CategoryController::class, 'store'])->name('admin.category.store');
+    Route::get('/category/{category}', [CategoryController::class, 'show'])->name('admin.category.show');
+    Route::put('/category/{category}', [CategoryController::class, 'update'])->name('admin.category.update');
+    Route::delete('/category/{category}', [CategoryController::class, 'destroy'])->name('admin.category.destroy');
+
+    // Product routes
+    Route::get('/product', [ProductController::class, 'index'])->name('admin.product');
+
+    // Other routes
+    Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports');
+    Route::get('/docs', [DocsController::class, 'index'])->name('admin.docs');
+    Route::get('/errors', [ErrorsController::class, 'index'])->name('admin.errors');
+});
+

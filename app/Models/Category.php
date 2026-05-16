@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    public $timestamps = false;   // ta table n'a pas created_at / updated_at
+
+    public $timestamps = false;
 
     protected $fillable = [
         'nomcat',
@@ -16,7 +17,41 @@ class Category extends Model
         'approved_by',
         'approved_at',
         'rejection_reason',
+        'description',
     ];
+
+    protected $appends = ['description'];
+
+    protected $casts = [
+        'approved_at' => 'datetime',
+    ];
+
+    /**
+     * Boot the model.
+     */
+    /**
+     * Get the image URL
+     */
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            return asset('storage/' . $this->image);
+        }
+        return asset('images/placeholder.png');
+    }
+
+    /**
+     * Get status badge color
+     */
+    public function getStatusColorAttribute()
+    {
+        return match($this->status) {
+            'approved' => 'green',
+            'pending' => 'yellow',
+            'rejected' => 'red',
+            default => 'gray',
+        };
+    }
 
     // ── Relations ──
     public function creator()
@@ -33,4 +68,56 @@ class Category extends Model
     {
         return $this->hasMany(Produit::class, 'categorie_id');
     }
+
+    public function getNameAttribute()
+    {
+        return $this->nomcat;
+    }
+
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes['rejection_reason'] = $value;
+    }
+
+    public function getDescriptionAttribute()
+    {
+        return $this->rejection_reason;
+    }
+
+    /**
+     * Get status badge text
+     */
+    public function getStatusTextAttribute()
+    {
+        return match($this->status) {
+            'approved' => 'Approuvée',
+            'pending' => 'En attente',
+            'rejected' => 'Rejetée',
+            default => 'Inconnue',
+        };
+    }
+
+    /**
+     * Scope: Filter by status
+     */
+    public function scopeByStatus($query, $status)
+    {
+        if ($status && $status !== 'all') {
+            return $query->where('status', $status);
+        }
+        return $query;
+    }
+
+    /**
+     * Scope: Search by name
+     */
+    public function scopeSearch($query, $search)
+    {
+        if ($search) {
+            return $query->where('nomcat', 'like', '%' . $search . '%')
+                        ->orWhere('rejection_reason', 'like', '%' . $search . '%');
+        }
+        return $query;
+    }
 }
+
