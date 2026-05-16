@@ -119,7 +119,7 @@
   <!-- SIDEBAR -->
   <aside id="sidebar" class="sidebar">
     <div class="logo-area">
-      <a href="{{ route('admin.index') }}" class="d-inline-flex">
+      <a href="{{ route('admin.product.index') }}" class="d-inline-flex">
         <img src="{{ asset('images/logo-icon.svg') }}" alt="" width="24">
         <span class="logo-text ms-2"><img src="{{ asset('images/logo.svg') }}" alt=""></span>
       </a>
@@ -142,7 +142,7 @@
         </a>
       </li>
       <li>
-        <a class="nav-link {{ request()->routeIs('admin.product') ? 'active' : '' }}" href="{{ route('admin.product') }}">
+        <a class="nav-link {{ request()->routeIs('admin.product.index') ? 'active' : '' }}" href="{{ route('admin.product.index') }}">
           <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
         </a>
       </li>
