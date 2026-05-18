@@ -74,6 +74,11 @@ class Product extends Model
         return $this->prix * $this->quantite;
     }
 
+    public function getStockValueAttribute(): int
+    {
+        return $this->prix * $this->quantite;
+    }
+
     // Scope stock faible
     public function scopeLowStock($query, $threshold = 5)
     {

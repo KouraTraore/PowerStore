@@ -20,7 +20,6 @@ class Client extends Model
         });
     }
 
-    // ✅ AJOUTE CETTE RELATION
     public function commandes()
     {
         return $this->hasMany(Commande::class);

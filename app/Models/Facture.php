@@ -21,7 +21,7 @@ class Facture extends Model
         return $this->belongsTo(Client::class, 'client_id');
     }
 
-    // Relation avec les commandes (une facture peut avoir plusieurs commandes)
+    // Relation avec les commandes
     public function commandes()
     {
         return $this->hasMany(Commande::class, 'facture_id');

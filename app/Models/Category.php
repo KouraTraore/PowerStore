@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-
-
     public $timestamps = false;
 
     protected $fillable = [
@@ -27,12 +25,6 @@ class Category extends Model
         'approved_at' => 'datetime',
     ];
 
-    /**
-     * Boot the model.
-     */
-    /**
-     * Get the image URL
-     */
     public function getImageUrlAttribute()
     {
         if ($this->image) {
@@ -41,9 +33,6 @@ class Category extends Model
         return asset('images/placeholder.png');
     }
 
-    /**
-     * Get status badge color
-     */
     public function getStatusColorAttribute()
     {
         return match($this->status) {
@@ -52,6 +41,22 @@ class Category extends Model
             'rejected' => 'red',
             default => 'gray',
         };
+    }
+
+    // ── Relations ──
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function produits()
+    {
+        return $this->hasMany(Product::class, 'categorie_id');
     }
 
     public function getNameAttribute()
@@ -69,9 +74,6 @@ class Category extends Model
         return $this->rejection_reason;
     }
 
-    /**
-     * Get status badge text
-     */
     public function getStatusTextAttribute()
     {
         return match($this->status) {
@@ -82,9 +84,6 @@ class Category extends Model
         };
     }
 
-    /**
-     * Scope: Filter by status
-     */
     public function scopeByStatus($query, $status)
     {
         if ($status && $status !== 'all') {
@@ -93,9 +92,6 @@ class Category extends Model
         return $query;
     }
 
-    /**
-     * Scope: Search by name
-     */
     public function scopeSearch($query, $search)
     {
         if ($search) {
@@ -104,7 +100,4 @@ class Category extends Model
         }
         return $query;
     }
-
-    //
-
 }

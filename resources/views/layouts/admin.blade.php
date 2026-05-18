@@ -9,23 +9,24 @@
   <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon_io/favicon-32x32.png') }}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon_io/favicon-16x16.png') }}">
   <link rel="manifest" href="{{ asset('images/favicon_io/site.webmanifest') }}">
-  
+
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Tabler Icons -->
   <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <!-- ApexCharts -->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-  
+
   @stack('styles')
 </head>
 
 <body>
   <div id="overlay" class="overlay"></div>
-  
+
   <!-- TOPBAR -->
   <nav id="topbar" class="navbar bg-white border-bottom fixed-top topbar px-3">
     <button id="toggleBtn" class="d-none d-lg-inline-flex btn btn-light btn-icon btn-sm">
@@ -36,7 +37,7 @@
     <button id="mobileBtn" class="btn btn-light btn-icon btn-sm d-lg-none me-2">
       <i class="ti ti-layout-sidebar-left-expand"></i>
     </button>
-    
+
     <div>
       <ul class="list-unstyled d-flex align-items-center mb-0 gap-1">
         <!-- Bell icon -->
@@ -93,28 +94,22 @@
             </ul>
           </div>
         </li>
-        
-        <!-- Dropdown -->
+
+        <!-- Dropdown user -->
         <li class="ms-3 dropdown">
-          <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="{{ asset('images/avatar/avatar-1.jpg') }}" alt="" class="avatar avatar-sm rounded-circle" />
+          <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="avatar-circle">
+            {{ strtoupper(substr(auth()->user()->prenom ?? 'U', 0, 1) . substr(auth()->user()->nom ?? 'A', 0, 1)) }}
           </a>
           <div class="dropdown-menu dropdown-menu-end p-0" style="min-width: 200px;">
             <div>
               <div class="d-flex gap-3 align-items-center border-dashed border-bottom px-3 py-3">
-                <img src="{{ asset('images/avatar/avatar-1.jpg') }}" alt="" class="avatar avatar-md rounded-circle" />
-                <div>
-                  <h4 class="mb-0 small">Shrina Tesla</h4>
-                  <p class="mb-0 small">@imshrina</p>
+                <div class="avatar avatar-md rounded-circle avatar-circle-lg">
+                  {{ strtoupper(substr(auth()->user()->prenom ?? 'U', 0, 1) . substr(auth()->user()->nom ?? 'A', 0, 1)) }}
                 </div>
-              </div>
-              <div class="p-3 d-flex flex-column gap-1 small lh-lg">
-                <a href="{{ route('admin.product.index') }}">Home</a>
-                <a href="#!">Inbox</a>
-                <a href="#!">Chat</a>
-                <a href="#!">Activity</a>
-                <a href="#!">Account Settings</a>
-                <a href="">Logout</a>
+                <div>
+                  <h4 class="mb-0 small">{{ auth()->user()->prenom }} {{ auth()->user()->nom }}</h4>
+                  <p class="mb-0 small text-secondary">@{{ auth()->user()->username }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -126,12 +121,8 @@
   <!-- SIDEBAR -->
   <aside id="sidebar" class="sidebar">
     <div class="logo-area">
-
       <a href="{{ route('admin.index') }}" class="d-inline-flex">
         <img src="{{ asset('images/logo_site/logo.svg.png') }}" alt="" width="100%">
-        <span class="logo-text ms-2"><img src="{{ asset('images/') }}" alt=""></span>
-        
-      <a href="{{ route('admin.product.index') }}" class="d-inline-flex">
       </a>
     </div>
     <ul class="nav flex-column">
@@ -152,35 +143,37 @@
         </a>
       </li>
       <li>
-
-        <a class="nav-link {{ request()->routeIs('admin.produits') ? 'active' : '' }}" href="{{ route('admin.produits') }}">
+        <a class="nav-link {{ request()->routeIs('admin.product.index') ? 'active' : '' }}" href="{{ route('admin.product.index') }}">
           <i class="ti ti-plus"></i><span class="nav-text">Produits</span>
+        </a>
+      </li>
 
-      </a>
-
-      
-      <!-- ✅ COMMANDES CORRIGÉE ✅ -->
       <li>
         <a class="nav-link {{ request()->routeIs('admin.commandes.*') ? 'active' : '' }}" href="{{ route('admin.commandes.index') }}">
           <i class="ti ti-shopping-cart"></i><span class="nav-text">Commandes</span>
         </a>
       </li>
-      
-      <!-- ✅ FACTURES CORRIGÉE ✅ -->
+
       <li>
         <a class="nav-link {{ request()->routeIs('admin.factures.*') ? 'active' : '' }}" href="{{ route('admin.factures.index') }}">
           <i class="ti ti-receipt"></i><span class="nav-text">Factures</span>
         </a>
       </li>
-      
-   
-    
+
       <li class="px-4 pt-4 pb-2"><small class="nav-text">Compte</small></li>
-      <li><a class="nav-link" href=""><i class="ti ti-logout"></i><span class="nav-text">Déconnexion</span></a></li>
+      @auth
+        <li>
+          <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="ti ti-logout"></i><span class="nav-text">Déconnexion</span>
+          </a>
+        </li>
+      @else
+        <li><a class="nav-link" href="{{ route('login') }}"><i class="ti ti-logout"></i><span class="nav-text">Se connecter</span></a></li>
+      @endauth
     </ul>
   </aside>
 
-  <!-- TOAST CONTAINER (notifications modernes en haut à droite) -->
+  <!-- TOAST CONTAINER -->
   <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
       @if(session('success'))
           <div class="toast align-items-center text-white bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
@@ -223,7 +216,7 @@
   <main id="content" class="content py-10">
     <div class="container-fluid">
       @yield('content')
-      
+
       <div class="row">
         <div class="col-12">
           <footer class="text-center py-2 mt-6 text-secondary">
@@ -234,10 +227,15 @@
     </div>
   </main>
 
+  <!-- Formulaire de déconnexion caché -->
+  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+  </form>
+
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ asset('js/main.js') }}" type="module"></script>
-  
+
   <!-- Initialisation des toasts -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -250,7 +248,7 @@
       });
     });
   </script>
-  
+
   @stack('scripts')
 </body>
 

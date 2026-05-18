@@ -2,31 +2,41 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    public $timestamps = false; // si votre table n'a pas created_at/updated_at
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $fillable = [
+        'username', 'email', 'password', 'role', 'nom', 'prenom', 'is_active',
+    ];
+
+    protected $hidden = [
+        'password',
+    ];
+
+    // Mutator pour hasher automatiquement le mot de passe
+    public function setPasswordAttribute($value)
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        $this->attributes['password'] = Hash::make($value);
     }
+// Relation : les produits créés par cet utilisateur
+public function produits()
+{
+    return $this->hasMany(Product::class, 'created_by');
+}
+
+// Relation : les commandes créées par cet utilisateur
+public function commandes()
+{
+    return $this->hasMany(Commande::class, 'created_by');
+}
+    // Vérifie si l'utilisateur est super admin
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'super_admin';
+
+        }
 }

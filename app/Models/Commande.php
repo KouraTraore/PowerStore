@@ -20,13 +20,19 @@ class Commande extends Model
         return $this->belongsTo(Client::class, 'client_id');
     }
 
-    // Relation : une commande a plusieurs lignes de détail (produits)
+    // Relation : une commande appartient à un user
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    // Relation : une commande a plusieurs lignes de détail
     public function details()
     {
         return $this->hasMany(DetailCommande::class, 'commande_id');
     }
 
-    // Relation : une commande peut avoir une facture (si facture_id non nul)
+    // Relation : une commande peut avoir une facture
     public function facture()
     {
         return $this->belongsTo(Facture::class, 'facture_id');

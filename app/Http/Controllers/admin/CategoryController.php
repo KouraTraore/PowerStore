@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
@@ -67,119 +68,96 @@ class CategoryController extends Controller
      * Store a newly created category in storage.
      */
     public function store(Request $request)
-    {
-        if ($request->filled('image_url') && !preg_match('/^https?:\/\//i', $request->input('image_url'))) {
-            $request->merge(['image_url' => 'https://' . ltrim($request->input('image_url'), '/ ')]);
-        }
-
-        if (!$request->filled('status')) {
-            $request->merge(['status' => 'pending']);
-        }
-
-        $validated = $request->validate([
-            'nomcat' => 'required|string|max:50|unique:categories,nomcat',
-            'description' => 'nullable|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'image_url' => 'nullable|url|max:2048',
-            'status' => 'required|in:pending,approved,rejected',
-        ], [
-            'nomcat.required' => 'Le nom de la catégorie est obligatoire',
-            'nomcat.unique' => 'Cette catégorie existe déjà',
-            'nomcat.max' => 'Le nom ne doit pas dépasser 50 caractères',
-            'image.image' => 'Le fichier doit être une image',
-            'image.mimes' => 'L\'image doit être au format JPEG, PNG, JPG, GIF ou WebP',
-            'image.max' => 'L\'image ne doit pas dépasser 2MB',
-            'image_url.url' => 'L\'URL de l\'image est invalide',
-            'image_url.max' => 'L\'URL de l\'image est trop longue',
-            'status.in' => 'Le statut est invalide',
-        ]);
-
-        $imageUrl = $validated['image_url'] ?? null;
-        unset($validated['image_url']);
-
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $path = $file->store('categories', 'public');
-            $validated['image'] = $path;
-        } elseif ($imageUrl) {
-            $validated['image'] = $imageUrl;
-        }
-
-        Category::create($validated);
-
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Catégorie créée avec succès',
-            ]);
-        }
-
-        return redirect()->route('admin.category')
-                       ->with('success', 'Catégorie créée avec succès');
+{
+    // On garde la correction de l'URL de l'image si elle est saisie sans http
+    if ($request->filled('image_url') && !preg_match('/^https?:\/\//i', $request->input('image_url'))) {
+        $request->merge(['image_url' => 'https://' . ltrim($request->input('image_url'), '/ ')]);
     }
+
+    // ⚠️ On ne demande PLUS le champ 'status' à l'utilisateur
+    $validated = $request->validate([
+        'nomcat'      => 'required|string|max:50|unique:categories,nomcat',
+        'description' => 'nullable|string|max:500',
+        'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        'image_url'   => 'nullable|url|max:2048',
+    ]);
+
+    // ✅ On force le statut "pending" et on ajoute le créateur
+    $validated['status']     = 'pending';
+    $validated['created_by'] = Auth::id();
+
+    // Traitement de l'image (inchangé)
+    $imageUrl = $validated['image_url'] ?? null;
+    unset($validated['image_url']);   // on retire ce champ car il n'existe pas dans la table
+
+    if ($request->hasFile('image')) {
+        $path = $request->file('image')->store('categories', 'public');
+        $validated['image'] = $path;
+    } elseif ($imageUrl) {
+        $validated['image'] = $imageUrl;
+    }
+
+    Category::create($validated);
+
+    return redirect()->route('admin.category')
+        ->with('success', 'Catégorie soumise pour validation.');
+}
 
     /**
      * Update the specified category in storage.
      */
-    public function update(Request $request, Category $category)
-    {
-        if ($request->filled('image_url') && !preg_match('/^https?:\/\//i', $request->input('image_url'))) {
-            $request->merge(['image_url' => 'https://' . ltrim($request->input('image_url'), '/ ')]);
-        }
-
-        $validated = $request->validate([
-            'nomcat' => [
-                'required',
-                'string',
-                'max:50',
-                Rule::unique('categories', 'nomcat')->ignore($category->id),
-            ],
-            'description' => 'nullable|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'image_url' => 'nullable|url|max:2048',
-            'status' => 'required|in:pending,approved,rejected',
-        ], [
-            'nomcat.required' => 'Le nom de la catégorie est obligatoire',
-            'nomcat.unique' => 'Cette catégorie existe déjà',
-            'nomcat.max' => 'Le nom ne doit pas dépasser 50 caractères',
-            'image.image' => 'Le fichier doit être une image',
-            'image.mimes' => 'L\'image doit être au format JPEG, PNG, JPG, GIF ou WebP',
-            'image.max' => 'L\'image ne doit pas dépasser 2MB',
-            'image_url.url' => 'L\'URL de l\'image est invalide',
-            'image_url.max' => 'L\'URL de l\'image est trop longue',
-            'status.in' => 'Le statut est invalide',
-        ]);
-
-        $imageUrl = $validated['image_url'] ?? null;
-        unset($validated['image_url']);
-
-        if ($request->hasFile('image')) {
-            if ($category->image && !filter_var($category->image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($category->image);
-            }
-
-            $file = $request->file('image');
-            $path = $file->store('categories', 'public');
-            $validated['image'] = $path;
-        } elseif ($imageUrl) {
-            if ($category->image && !filter_var($category->image, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete($category->image);
-            }
-            $validated['image'] = $imageUrl;
-        }
-
-        $category->update($validated);
-
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Catégorie mise à jour avec succès',
-            ]);
-        }
-
-        return redirect()->route('admin.category')
-                       ->with('success', 'Catégorie mise à jour avec succès');
+     public function update(Request $request, Category $category)
+{
+    // ❌ Un Admin normal ne peut pas modifier une catégorie déjà approuvée
+    if ($category->status === 'approved' && Auth::user()->role !== 'super_admin') {
+        return back()->withErrors(['nomcat' => 'Cette catégorie a déjà été validée et ne peut plus être modifiée.']);
     }
+
+    // Nettoyage image_url (inchangé)
+    if ($request->filled('image_url') && !preg_match('/^https?:\/\//i', $request->input('image_url'))) {
+        $request->merge(['image_url' => 'https://' . ltrim($request->input('image_url'), '/ ')]);
+    }
+
+    $validated = $request->validate([
+        'nomcat'      => ['required', 'string', 'max:50', Rule::unique('categories', 'nomcat')->ignore($category->id)],
+        'description' => 'nullable|string|max:500',
+        'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        'image_url'   => 'nullable|url|max:2048',
+    ]);
+
+    // ➜ Si la catégorie était rejetée, elle repasse en pending après modification
+    if ($category->status === 'rejected') {
+        $validated['status'] = 'pending';
+        $validated['rejection_reason'] = null;
+    }
+    // Si elle est pending, elle reste pending ; ne pas toucher au statut
+
+    // Gestion de l’image
+    $imageUrl = $validated['image_url'] ?? null;
+    unset($validated['image_url']);
+
+    if ($request->hasFile('image')) {
+        if ($category->image && !filter_var($category->image, FILTER_VALIDATE_URL)) {
+            Storage::disk('public')->delete($category->image);
+        }
+        $path = $request->file('image')->store('categories', 'public');
+        $validated['image'] = $path;
+    } elseif ($imageUrl) {
+        if ($category->image && !filter_var($category->image, FILTER_VALIDATE_URL)) {
+            Storage::disk('public')->delete($category->image);
+        }
+        $validated['image'] = $imageUrl;
+    }
+
+    $category->update($validated);
+
+    $message = 'Catégorie mise à jour.';
+    if ($category->status === 'pending') {
+        $message .= ' Elle est en attente de validation.';
+    }
+
+    return redirect()->route('admin.category')->with('success', $message);
+}
 
     /**
      * Delete the specified category.

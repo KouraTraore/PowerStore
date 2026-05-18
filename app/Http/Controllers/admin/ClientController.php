@@ -21,13 +21,13 @@ class ClientController extends Controller
         $search = $request->get('search', '');
 
         // Liste paginée avec relations Eloquent
-        $clients = Client::withCount('commandes')  // nb_commandes
-            ->withSum('commandes', 'total_ttc')     // total_achats
+        $clients = Client::withCount('commandes')
+            ->withSum('commandes', 'total_ttc')
             ->when($search, fn($q) => $q->search($search))
             ->orderBy('prenom', $order)
             ->paginate(10);
 
-        // Statistiques avec Eloquent
+        // Statistiques
         $totalClients = Client::count();
         $clientsActifs = Commande::distinct('client_id')->count('client_id');
         $caTotal = Commande::sum('total_ttc');
@@ -87,7 +87,7 @@ class ClientController extends Controller
         $totalCommandes = $commandes->count();
         $totalAchats = $commandes->sum('total_ttc');
 
-        // Produits achetés via relations Eloquent
+        // Produits achetés
         $produits = Product::select(
                 'produits.id',
                 'produits.nomp',
