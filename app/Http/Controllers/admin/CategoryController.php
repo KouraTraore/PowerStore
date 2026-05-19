@@ -97,7 +97,11 @@ class CategoryController extends Controller
         $validated['image'] = $imageUrl;
     }
 
-    Category::create($validated);
+    $category = Category::create($validated);
+
+    if (request()->ajax() || request()->wantsJson()) {
+        return response()->json(['message' => 'Catégorie soumise pour validation.', 'category' => $category]);
+    }
 
     return redirect()->route('admin.category')
         ->with('success', 'Catégorie soumise pour validation.');
@@ -152,8 +156,12 @@ class CategoryController extends Controller
     $category->update($validated);
 
     $message = 'Catégorie mise à jour.';
-    if ($category->status === 'pending') {
+    if ($category->fresh()->status === 'pending') {
         $message .= ' Elle est en attente de validation.';
+    }
+
+    if (request()->ajax() || request()->wantsJson()) {
+        return response()->json(['message' => $message, 'category' => $category->fresh()]);
     }
 
     return redirect()->route('admin.category')->with('success', $message);

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Détail commande #' . $commande->id . ' - POWERSTOCK')
+@section('title', 'Détail commande #' . $commande->id . ' - POWERSTORE')
 
 @section('content')
 <div class="row mb-4">

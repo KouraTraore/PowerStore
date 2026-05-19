@@ -382,13 +382,13 @@
             th { background-color: #f5f5f5; }
             .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
         </style></head><body>
-        <div class="header"><h1>POWERSTOCK</h1><p>Bamako - Mali | Tel: 77-90-34-44</p><h3>Liste des clients</h3><p>Date : ${new Date().toLocaleDateString('fr-FR')}</p></div>
+        <div class="header"><h1>POWERSTORE</h1><p>Bamako - Mali | Tel: 77-90-34-44</p><h3>Liste des clients</h3><p>Date : ${new Date().toLocaleDateString('fr-FR')}</p></div>
         <table><thead><tr><th>Client</th><th>Téléphone</th><th>Email</th><th>Adresse</th><th>Commandes</th></tr></thead><tbody>`;
         clients.forEach(c => {
             let fullName = c.prenom + (c.nomc ? ' ' + c.nomc : '');
             printContent += `<tr><td>${fullName}</td><td>${c.tel || '-'}</td><td>${c.email || '-'}</td><td>${c.adresse || '-'}</td><td style="text-align: center">${c.nb_commandes || 0}</td></tr>`;
         });
-        printContent += `</tbody></table><div class="footer"><p>PowerStock - Système de facturation</p><p>© ${new Date().getFullYear()} Tous droits réservés</p></div></body></html>`;
+        printContent += `</tbody></table><div class="footer"><p>POWERSTORE - Système de facturation</p><p>© ${new Date().getFullYear()} Tous droits réservés</p></div></body></html>`;
         let win = window.open('', '_blank');
         win.document.write(printContent);
         win.document.close();

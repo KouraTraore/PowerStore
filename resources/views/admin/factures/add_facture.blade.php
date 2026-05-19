@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Ajouter une facture - POWERSTOCK')
+@section('title', 'Ajouter une facture - POWERSTORE')
 
 @section('content')
 <div class="row mb-4">

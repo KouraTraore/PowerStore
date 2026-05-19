@@ -22,8 +22,8 @@
 </head>
 <body>
     <div class="header">
-        <div class="logo">POWERSTOCK</div>
-        <div>Bamako - Mali | Tél: 77-90-34-44 | contact@powerstock.com</div>
+        <div class="logo">POWERSTORE</div>
+        <div>Bamako - Mali | Tél: 77-90-34-44 | contact@powerstore.com</div>
     </div>
 
     <div class="facture-info">

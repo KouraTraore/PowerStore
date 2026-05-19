@@ -24,9 +24,9 @@
 </head>
 <body>
     <div class="header">
-        <div class="logo">POWERSTOCK</div>
+        <div class="logo">POWERSTORE</div>
         <div class="company-info">
-            Bamako - Mali | Tél: 77-90-34-44 | Email: contact@powerstock.com
+            Bamako - Mali | Tél: 77-90-34-44 | Email: contact@powerstore.com
         </div>
     </div>
 

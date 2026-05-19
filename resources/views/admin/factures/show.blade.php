@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Facture ' . $facture->nomf . ' - POWERSTOCK')
+@section('title', 'Facture ' . $facture->nomf . ' - POWERSTORE')
 
 @section('content')
 <div class="row mb-4">

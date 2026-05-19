@@ -70,7 +70,7 @@ class ProductController extends BaseController
         }
 
         // 📄 Pagination (avec conservation des paramètres de filtre)
-        $products = $query->paginate(15)->withQueryString();
+        $products = $query->paginate(7)->withQueryString();
 
         // 📊 Statistiques pour le dashboard
         $stats = [

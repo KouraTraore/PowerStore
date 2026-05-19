@@ -17,13 +17,17 @@ class CommandeController extends Controller
     // Affiche la liste des commandes
     public function index()
     {
-        $commandes = Commande::with(['client', 'facture'])->orderBy('date_commande', 'desc')->get();
         $stats = [
-            'total'      => $commandes->count(),
-            'livrees'    => $commandes->where('statut', 'livree')->count(),
-            'en_attente' => $commandes->where('statut', 'en_attente')->count(),
-            'annulees'   => $commandes->where('statut', 'annulee')->count(),
+            'total'      => Commande::count(),
+            'livrees'    => Commande::where('statut', 'livree')->count(),
+            'en_attente' => Commande::where('statut', 'en_attente')->count(),
+            'annulees'   => Commande::where('statut', 'annulee')->count(),
         ];
+
+        $commandes = Commande::with(['client', 'facture', 'details'])
+            ->orderBy('date_commande', 'desc')
+            ->paginate(7);
+
         return view('admin.commandes.index', compact('commandes', 'stats'));
     }
 

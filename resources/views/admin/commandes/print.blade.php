@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Commande #{{ $commande->id }} - POWERSTOCK</title>
+    <title>Commande #{{ $commande->id }} - POWERSTORE</title>
     <style>
         @page { margin: 2cm; }
         body { font-family: 'DejaVu Sans', Arial, sans-serif; font-size: 12px; line-height: 1.4; color: #333; }

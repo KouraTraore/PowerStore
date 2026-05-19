@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>@yield('title', 'POWERSTOCK - Dashboard')</title>
+  <title>@yield('title', 'POWERSTORE - Dashboard')</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon_io/apple-touch-icon.png') }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon_io/favicon-32x32.png') }}">
@@ -220,7 +220,7 @@
       <div class="row">
         <div class="col-12">
           <footer class="text-center py-2 mt-6 text-secondary">
-            <p class="mb-0">Copyright © 2026 POWERSTOCK. Developed by <a href="https://codescandy.com/" target="_blank" class="text-primary">CodesCandy</a> • Distributed by <a href="https://themewagon.com/" target="_blank" class="text-primary">ThemeWagon</a></p>
+            <p class="mb-0">Copyright © 2026 POWERSTORE. Developed by <a href="https://codescandy.com/" target="_blank" class="text-primary">CodesCandy</a> • Distributed by <a href="https://themewagon.com/" target="_blank" class="text-primary">ThemeWagon</a></p>
           </footer>
         </div>
       </div>

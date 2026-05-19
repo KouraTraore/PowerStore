@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Commandes - POWERSTOCK')
+@section('title', 'Commandes - POWERSTORE')
 
 @section('content')
 <style>
@@ -150,8 +150,14 @@
             </tbody>
         </table>
     </div>
-    <div class="card-footer bg-white">
-        {{-- $commandes->links() --}}
+    <div class="card-footer bg-white d-flex justify-content-between align-items-center px-4 py-3">
+        <small class="text-muted">
+            Affichage de {{ $commandes->firstItem() ?? 0 }} à {{ $commandes->lastItem() ?? 0 }}
+            sur {{ $commandes->total() }} commande(s)
+        </small>
+        <div>
+            {{ $commandes->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 </div>
 @endsection

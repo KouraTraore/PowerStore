@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Choix de la facture - POWERSTOCK')
+@section('title', 'Choix de la facture - POWERSTORE')
 
 @section('content')
 <div class="row justify-content-center">
